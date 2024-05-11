@@ -6,11 +6,12 @@
 [node name="Test-level" type="Node2D"]
 
 [node name="Basic Enemy" parent="." instance=ExtResource("1_yocpo")]
-position = Vector2(912, 478)
+position = Vector2(660, 323)
 _projectile = ExtResource("2_8elng")
 _numberOfProjectiles = 5
 _cooldownAfterShot = 10.0
-_maxDestinationRange = 1.0
+_maxDestinationRange = 200.0
+_randomSeed = "random_seed_01"
 _health = 2.0
-_speed = 250.0
+_speed = 50.0
 _powerupDropchange = 0.1

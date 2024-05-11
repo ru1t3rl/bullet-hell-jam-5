@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using BulletHellJam5.Enemies.Enums;
 using BulletHellJam5.projectiles;
 using Godot;
@@ -12,6 +13,8 @@ public partial class BasicEnemy : BaseEnemy
     private PackedScene _projectile;
     [Export]
     private int _numberOfProjectiles;
+    [Export(hintString: "Time in milliseconds")]
+    private int _timeBetweenFiring = 500;
 
     [ExportGroup("Movement")]
     [Export]
@@ -22,7 +25,7 @@ public partial class BasicEnemy : BaseEnemy
     private bool _cooldown = false;
     private Timer _cooldownTimer = new();
 
-    private Vector2? _destination = null;
+    private Vector2? _destination;
 
     [Export]
     private string _randomSeed = "random_seed";
@@ -34,6 +37,7 @@ public partial class BasicEnemy : BaseEnemy
 
         _random = new Random(_randomSeed.GetHashCode());
 
+        AddChild(_cooldownTimer);
         _cooldownTimer.Timeout += FinishCooldown;
         _cooldownTimer.OneShot = true;
     }
@@ -58,20 +62,23 @@ public partial class BasicEnemy : BaseEnemy
             if (sqrDistance < 1)
             {
                 Velocity = Vector2.Zero;
+                _destination = null;
                 Shoot();
                 return;
             }
         }
 
-        Velocity = Position - _destination!.Value;
+        Velocity = _destination!.Value - GlobalPosition;
         Velocity = Velocity.Normalized();
         Velocity *= _speed;
 
         State = EnemyState.Moving;
     }
 
-    public override void Shoot()
+    public async override void Shoot()
     {
+        base.Shoot();
+
         Vector2 viewportSize = GetViewportRect().Size;
         Vector2 target = new Vector2(viewportSize.X / 2, viewportSize.Y / 2);
         for (int iProjectile = 0; iProjectile < _numberOfProjectiles; iProjectile++)
@@ -86,10 +93,11 @@ public partial class BasicEnemy : BaseEnemy
             }
 
             AddSibling(instance);
-            projectile.Fire(GlobalPosition - target);
+            projectile.Fire(GlobalPosition, target - GlobalPosition);
+
+            await Task.Delay(_timeBetweenFiring);
         }
 
-        base.Shoot();
         _cooldown = true;
         _cooldownTimer.WaitTime = _cooldownAfterShot;
         _cooldownTimer.Start();
@@ -100,6 +108,12 @@ public partial class BasicEnemy : BaseEnemy
         _destination = Position + new Vector2(
             _random.NextSingle() * (_maxDestinationRange * 2) - _maxDestinationRange,
             _random.NextSingle() * (_maxDestinationRange * 2) - _maxDestinationRange
+        );
+
+        var viewportSize = GetViewportRect().Size;
+        _destination = new Vector2(
+            Mathf.Clamp(_destination!.Value.X, 0, viewportSize.X),
+            Mathf.Clamp(_destination!.Value.Y, 0, viewportSize.Y)
         );
     }
 

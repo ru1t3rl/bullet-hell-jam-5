@@ -23,6 +23,7 @@ public abstract partial class BaseProjectile : Area2D
 
     public override void _Ready()
     {
+        AddChild(_lifespanTimer);
         _lifespanTimer.OneShot = true;
         _lifespanTimer.Timeout += LifespanTimerOnTimeout;
         _sprite ??= GetNode<Sprite2D>(".");
@@ -34,6 +35,7 @@ public abstract partial class BaseProjectile : Area2D
     {
         Move(delta);
         EdgeCheck();
+        Rotation = float.Atan2(velocity.Y, velocity.X);
     }
 
     private void OnBodyEntered(Node2D body)
@@ -49,8 +51,9 @@ public abstract partial class BaseProjectile : Area2D
         EmitSignal(nameof(OnLifespanReached));
     }
 
-    public void Fire(Vector2 direction)
+    public void Fire(Vector2 origin, Vector2 direction)
     {
+        GlobalPosition = origin;
         velocity = direction.Normalized() * speed;
         _lifespanTimer.WaitTime = _lifeSpan;
         _lifespanTimer.Start();
