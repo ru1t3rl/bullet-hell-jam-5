@@ -91,6 +91,7 @@ public partial class BasicEnemy : BaseEnemy
 
         base.Shoot();
         _cooldown = true;
+        _cooldownTimer.WaitTime = _cooldownAfterShot;
         _cooldownTimer.Start();
     }
 

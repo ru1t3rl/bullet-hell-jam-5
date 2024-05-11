@@ -23,7 +23,7 @@ public abstract partial class BaseEnemy : CharacterBody2D
         protected set
         {
             _state = value;
-            EmitSignal(nameof(OnStateChangeEventHandler), (int)_state);
+            EmitSignal(nameof(OnStateChange), (int)_state);
         }
     }
 
@@ -38,7 +38,7 @@ public abstract partial class BaseEnemy : CharacterBody2D
     public virtual void Shoot()
     {
         State = EnemyState.Shooting;
-        EmitSignal(nameof(OnShootEventHandler));
+        EmitSignal(nameof(OnShoot));
     }
 
     public virtual void TakeDamage(float damage)
@@ -55,6 +55,6 @@ public abstract partial class BaseEnemy : CharacterBody2D
     protected virtual void Die()
     {
         State = EnemyState.Dead;
-        EmitSignal(nameof(OnDieEventHandler), this);
+        EmitSignal(nameof(OnDie), this);
     }
 }

@@ -9,6 +9,8 @@
 position = Vector2(912, 478)
 _projectile = ExtResource("2_8elng")
 _numberOfProjectiles = 5
+_cooldownAfterShot = 10.0
+_maxDestinationRange = 1.0
 _health = 2.0
 _speed = 250.0
 _powerupDropchange = 0.1

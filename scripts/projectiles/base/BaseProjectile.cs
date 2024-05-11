@@ -52,6 +52,7 @@ public abstract partial class BaseProjectile : Area2D
     public void Fire(Vector2 direction)
     {
         velocity = direction.Normalized() * speed;
+        _lifespanTimer.WaitTime = _lifeSpan;
         _lifespanTimer.Start();
     }
 
