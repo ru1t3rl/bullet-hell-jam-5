@@ -2,7 +2,7 @@ using Godot;
 
 namespace BulletHellJam5.projectiles;
 
-public partial class BaseProjectile : Area2D
+public abstract partial class BaseProjectile : Area2D
 {
     [Export]
     private float _speed;
@@ -10,24 +10,44 @@ public partial class BaseProjectile : Area2D
     [Export(hintString: "Lifespan in seconds")]
     private float _lifeSpan = 10;
 
+    [ExportGroup("Enemy Visual")]
+    [Export]
+    private Sprite2D _sprite;
+    [Export]
+    private Color _enemyColor = Colors.Red;
+    [Export]
+    private Color _friendlyColor = Colors.Blue;
+
     private Vector2 _velocity = Vector2.Zero;
 
     private Timer _lifespanTimer = new();
 
     public override void _Ready()
     {
+        _lifespanTimer.OneShot = true;
         _lifespanTimer.Timeout += LifespanTimerOnTimeout;
+        _sprite ??= GetNode<Sprite2D>(".");
+    }
+
+    protected abstract void Move();
+
+    public override void _PhysicsProcess(double delta)
+    {
+        Move();
+        EdgeCheck();
+    }
+
+    private void OnBodyEntered(Node2D body)
+    {
+        EmitSignal(nameof(OnCollision), body);
+
+        // TODO [LR]: When player is in game implement collision check to change color
     }
 
     private void LifespanTimerOnTimeout()
     {
         Visible = false;
-    }
-
-    public override void _PhysicsProcess(double delta)
-    {
-        GlobalPosition += _velocity * (float)delta;
-        EdgeCheck();
+        EmitSignal(nameof(OnLifespanReached));
     }
 
     public void Fire(Vector2 direction)
