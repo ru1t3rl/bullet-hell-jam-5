@@ -11,7 +11,6 @@ public abstract partial class BaseEnemy : CharacterBody2D
 
     [Export]
     protected float _speed;
-    protected Vector2 _velocity = Vector2.Zero;
 
     [Export(PropertyHint.Range, "0, 1, 0.1f")]
     protected float _powerupDropchange = 0.5f;

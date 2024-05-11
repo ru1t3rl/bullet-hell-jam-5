@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctdvwxqug8cgw"]
+
+[ext_resource type="PackedScene" uid="uid://w2ybjhoi8rl5" path="res://scenes/enemies/basic_enemy.tscn" id="1_yocpo"]
+[ext_resource type="PackedScene" uid="uid://56gmhaclgtim" path="res://scenes/projectiles/basic_projectile.tscn" id="2_8elng"]
+
+[node name="Test-level" type="Node2D"]
+
+[node name="Basic Enemy" parent="." instance=ExtResource("1_yocpo")]
+position = Vector2(912, 478)
+_projectile = ExtResource("2_8elng")
+_numberOfProjectiles = 5
+_health = 2.0
+_speed = 250.0
+_powerupDropchange = 0.1
