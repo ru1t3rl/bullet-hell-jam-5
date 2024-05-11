@@ -1,15 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://w2ybjhoi8rl5"]
+[gd_scene load_steps=5 format=3 uid="uid://w2ybjhoi8rl5"]
 
 [ext_resource type="Script" path="res://scripts/enemies/BasicEnemy.cs" id="1_8pj8o"]
 [ext_resource type="Texture2D" uid="uid://cpjxbogugw6gf" path="res://assets/sprites/enemies/enemyBlack4.png" id="2_66bm7"]
+[ext_resource type="PackedScene" uid="uid://56gmhaclgtim" path="res://scenes/projectiles/basic_projectile.tscn" id="2_ku4j6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nwj7r"]
 radius = 49.8197
 
 [node name="Basic Enemy" type="CharacterBody2D"]
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_8pj8o")
+_projectile = ExtResource("2_ku4j6")
+_numberOfProjectiles = 5
+_timeBetweenShots = 400
+_maxDestinationRange = 250.0
+_rotationSpeed = 5.0
+_health = 3.0
+_speed = 50.0
+_powerupDropchange = 0.1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = -1.5708
 texture = ExtResource("2_66bm7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

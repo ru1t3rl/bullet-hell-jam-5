@@ -13,19 +13,22 @@ public partial class BasicEnemy : BaseEnemy
     private PackedScene _projectile;
     [Export]
     private int _numberOfProjectiles;
-    [Export(hintString: "Time in milliseconds")]
-    private int _timeBetweenFiring = 500;
+    [Export]
+    private int _timeBetweenShots = 500;
+    [Export]
+    private float _cooldownAfterShots = 5f;
 
     [ExportGroup("Movement")]
     [Export]
-    private float _cooldownAfterShot = 5f;
-    [Export]
     private float _maxDestinationRange = 50f;
+    [Export]
+    private float _rotationSpeed = 2;
 
     private bool _cooldown = false;
     private Timer _cooldownTimer = new();
 
     private Vector2? _destination;
+    private Vector2 _targetPosition = Vector2.Zero;
 
     [Export]
     private string _randomSeed = "random_seed";
@@ -37,9 +40,18 @@ public partial class BasicEnemy : BaseEnemy
 
         _random = new Random(_randomSeed.GetHashCode());
 
+        var viewportRect = GetViewportRect();
+        _targetPosition = viewportRect.Size / 2;
+
         AddChild(_cooldownTimer);
         _cooldownTimer.Timeout += FinishCooldown;
         _cooldownTimer.OneShot = true;
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
+        LookAtVelocityDirection(delta);
     }
 
     protected override void Move()
@@ -68,6 +80,11 @@ public partial class BasicEnemy : BaseEnemy
             }
         }
 
+        if (_destination is null)
+        {
+            return;
+        }
+
         Velocity = _destination!.Value - GlobalPosition;
         Velocity = Velocity.Normalized();
         Velocity *= _speed;
@@ -79,8 +96,6 @@ public partial class BasicEnemy : BaseEnemy
     {
         base.Shoot();
 
-        Vector2 viewportSize = GetViewportRect().Size;
-        Vector2 target = new Vector2(viewportSize.X / 2, viewportSize.Y / 2);
         for (int iProjectile = 0; iProjectile < _numberOfProjectiles; iProjectile++)
         {
             var instance = _projectile.Instantiate();
@@ -93,14 +108,29 @@ public partial class BasicEnemy : BaseEnemy
             }
 
             AddSibling(instance);
-            projectile.Fire(GlobalPosition, target - GlobalPosition);
+            projectile.Fire(GlobalPosition, _targetPosition - GlobalPosition);
 
-            await Task.Delay(_timeBetweenFiring);
+            await Task.Delay(_timeBetweenShots);
         }
 
         _cooldown = true;
-        _cooldownTimer.WaitTime = _cooldownAfterShot;
+        _cooldownTimer.WaitTime = _cooldownAfterShots;
         _cooldownTimer.Start();
+    }
+
+    private void LookAtVelocityDirection(double delta)
+    {
+        if (State == EnemyState.Moving)
+        {
+            float targetAngle = float.Atan2(Velocity.Y, Velocity.X);
+            Rotation = float.Lerp(Rotation, targetAngle, (float)delta * _rotationSpeed);
+        }
+        else
+        {
+            Vector2 direction = _targetPosition - GlobalPosition;
+            float targetAngle = float.Atan2(direction.Y, direction.X);
+            Rotation = float.Lerp(Rotation, targetAngle, (float)delta * _rotationSpeed);
+        }
     }
 
     private void SetDestination()

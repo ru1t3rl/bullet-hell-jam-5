@@ -8,8 +8,9 @@ radius = 27.0
 height = 122.0
 
 [node name="Basic Projectile" type="Area2D" node_paths=PackedStringArray("_sprite")]
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_myi44")
-speed = 50.0
+speed = 300.0
 _sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
