@@ -1,10 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://56gmhaclgtim"]
+[gd_scene load_steps=4 format=3 uid="uid://56gmhaclgtim"]
 
 [ext_resource type="Script" path="res://scripts/projectiles/BaseProjectile.cs" id="1_t2hli"]
+[ext_resource type="Texture2D" uid="uid://dgnm57a8id3k1" path="res://assets/sprites/projectiles/rocket.png" id="2_lnbah"]
 
-[node name="Base Projectile" type="Area2D"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d8xru"]
+radius = 27.0
+height = 122.0
+
+[node name="Base Projectile" type="Area2D" node_paths=PackedStringArray("_sprite")]
 script = ExtResource("1_t2hli")
+_sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_lnbah")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_d8xru")
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
