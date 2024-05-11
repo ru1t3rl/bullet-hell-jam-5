@@ -17,7 +17,16 @@ public abstract partial class BaseEnemy : CharacterBody2D
     protected float _powerupDropchange = 0.5f;
 
     private EnemyState _state = EnemyState.Idle;
-    public EnemyState State => _state;
+
+    public EnemyState State
+    {
+        get => _state;
+        protected set
+        {
+            _state = value;
+            EmitSignal(nameof(OnStateChangeEventHandler), (int)_state);
+        }
+    }
 
     public override void _PhysicsProcess(double delta)
     {
@@ -29,7 +38,7 @@ public abstract partial class BaseEnemy : CharacterBody2D
 
     public virtual void Shoot()
     {
-        _state = EnemyState.Shooting;
+        State = EnemyState.Shooting;
         EmitSignal(nameof(OnShootEventHandler));
     }
 
@@ -37,5 +46,16 @@ public abstract partial class BaseEnemy : CharacterBody2D
     {
         _health -= damage;
         EmitSignal(nameof(OnTakeDamage), Health);
+
+        if (_health <= 0)
+        {
+            Die();
+        }
+    }
+
+    protected virtual void Die()
+    {
+        State = EnemyState.Dead;
+        EmitSignal(nameof(OnDieEventHandler), this);
     }
 }
