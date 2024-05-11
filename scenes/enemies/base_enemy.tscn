@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://w2ybjhoi8rl5"]
+
+[ext_resource type="Script" path="res://scripts/enemies/BaseEnemy.cs" id="1_nxebk"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wmcpu"]
+radius = 62.0
+height = 124.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_nxebk")
+_health = null
+_speed = null
+_powerupDropchange = 0.205
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_wmcpu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
