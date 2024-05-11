@@ -5,8 +5,7 @@ namespace BulletHellJam5.projectiles;
 public abstract partial class BaseProjectile : Area2D
 {
     [Export]
-    private float _speed;
-
+    protected float speed;
     [Export(hintString: "Lifespan in seconds")]
     private float _lifeSpan = 10;
 
@@ -18,7 +17,7 @@ public abstract partial class BaseProjectile : Area2D
     [Export]
     private Color _friendlyColor = Colors.Blue;
 
-    private Vector2 _velocity = Vector2.Zero;
+    protected Vector2 velocity = Vector2.Zero;
 
     private Timer _lifespanTimer = new();
 
@@ -29,11 +28,11 @@ public abstract partial class BaseProjectile : Area2D
         _sprite ??= GetNode<Sprite2D>(".");
     }
 
-    protected abstract void Move();
+    protected abstract void Move(double delta);
 
     public override void _PhysicsProcess(double delta)
     {
-        Move();
+        Move(delta);
         EdgeCheck();
     }
 
@@ -52,7 +51,7 @@ public abstract partial class BaseProjectile : Area2D
 
     public void Fire(Vector2 direction)
     {
-        _velocity = direction.Normalized() * _speed;
+        velocity = direction.Normalized() * speed;
         _lifespanTimer.Start();
     }
 
@@ -78,14 +77,14 @@ public abstract partial class BaseProjectile : Area2D
 
     protected void TruncateVelocity()
     {
-        float sqrMagnitude = _velocity.X * _velocity.X + _velocity.Y * _velocity.Y;
+        float sqrMagnitude = velocity.X * velocity.X + velocity.Y * velocity.Y;
 
-        if (sqrMagnitude <= _speed * _speed)
+        if (sqrMagnitude <= speed * speed)
         {
             return;
         }
 
-        _velocity = _velocity.Normalized();
-        _velocity *= _speed;
+        velocity = velocity.Normalized();
+        velocity *= speed;
     }
 }
