@@ -13,3 +13,5 @@ polygon = PackedVector2Array(-38, -18, -80, 11, -118, 63, -39, 62, 13, 61, 55, 6
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(-38, -18, -80, 11, -118, 63, -39, 62, 13, 61, 55, 60, 66, -8, 70, -40, 12, -39)
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
