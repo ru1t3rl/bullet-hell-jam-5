@@ -1,3 +1,4 @@
+using BulletHellJam5.projectiles;
 using BulletHellJam5.ResourceZones.Resources;
 using Godot;
 
@@ -32,6 +33,17 @@ public partial class BaseResourceZone : Area2D
         SetupTimer();
 
         _startHealth = _health;
+    }
+
+    private void OnBodyEntered(Node2D body)
+    {
+        EmitSignal(nameof(OnCollision), body);
+        if (body is not BaseProjectile projectile)
+        {
+            return;
+        }
+
+        TakeDamage(projectile.Damage);
     }
 
     public void TakeDamage(int amount)

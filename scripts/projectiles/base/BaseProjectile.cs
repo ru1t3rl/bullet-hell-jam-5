@@ -8,6 +8,9 @@ public abstract partial class BaseProjectile : Area2D
     protected float speed;
     [Export(hintString: "Lifespan in seconds")]
     private float _lifeSpan = 10;
+    [Export]
+    private int _damage = 1;
+    public int Damage => _damage;
 
     [ExportGroup("Enemy Visual")]
     [Export]
