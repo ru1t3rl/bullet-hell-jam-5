@@ -10,6 +10,7 @@ public partial class BaseResourceZone : Area2D
 
     [Export]
     private int _health = 50;
+    private int _startHealth;
 
     [ExportGroup("Resource Generation")]
     [Export]
@@ -29,22 +30,27 @@ public partial class BaseResourceZone : Area2D
         }
 
         SetupTimer();
+
+        _startHealth = _health;
     }
 
     public void TakeDamage(int amount)
     {
         _health -= amount;
+        EmitSignal(nameof(OnTakeDamage), amount);
     }
 
     public void TakeResources(int amount)
     {
         _currentNumberOfResources -= amount;
+        EmitSignal(nameof(OnTakeResources), amount);
     }
 
     public int TakeAllResources()
     {
         var nResources = _currentNumberOfResources;
         _currentNumberOfResources = 0;
+        EmitSignal(nameof(OnTakeResources), nResources);
         return nResources;
     }
 
@@ -59,5 +65,6 @@ public partial class BaseResourceZone : Area2D
     private void OnResourceTimerTick()
     {
         _currentNumberOfResources += _numberOfResourcesPerGeneration;
+        EmitSignal(nameof(OnResourcesGenerated));
     }
 }
