@@ -46,10 +46,20 @@ public partial class BaseResourceZone : Area2D
         EmitSignal(nameof(OnTakeResources), amount);
     }
 
+    public int TakeResourcesHealthBased()
+    {
+        int resourcesToTake = Mathf.RoundToInt(_currentNumberOfResources * (_health / (float)_startHealth));
+        _currentNumberOfResources -= resourcesToTake;
+
+        EmitSignal(nameof(OnTakeResources), resourcesToTake);
+        return resourcesToTake;
+    }
+
     public int TakeAllResources()
     {
         var nResources = _currentNumberOfResources;
         _currentNumberOfResources = 0;
+
         EmitSignal(nameof(OnTakeResources), nResources);
         return nResources;
     }
