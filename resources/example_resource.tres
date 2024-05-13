@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://bajtwvjdgiky"]
+
+[ext_resource type="Script" path="res://scripts/resource-zones/Currency.cs" id="1_jpdke"]
+[ext_resource type="Texture2D" uid="uid://ptk7gvpm8m4h" path="res://assets/sprites/resources/resource-star.png" id="1_pb8pk"]
+
+[resource]
+script = ExtResource("1_jpdke")
+Name = "Example Resource"
+Icon = ExtResource("1_pb8pk")
