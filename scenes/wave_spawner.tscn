@@ -1,14 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://vtm3orwe5day"]
+[gd_scene load_steps=2 format=3 uid="uid://vtm3orwe5day"]
 
-[ext_resource type="Script" path="res://WaveSpawner.cs" id="1_38wcr"]
-[ext_resource type="PackedScene" uid="uid://w2ybjhoi8rl5" path="res://scenes/enemies/base_enemy.tscn" id="2_j26j7"]
+[ext_resource type="PackedScene" uid="uid://dkvn8vv3l6hmh" path="res://WaveManager.tscn" id="1_v24ai"]
 
-[node name="WaveSpawner" type="Node2D"]
-script = ExtResource("1_38wcr")
-enemy = ExtResource("2_j26j7")
+[node name="WaveScene" type="Node2D"]
 
 [node name="Wave_Spawner_Timer" type="Timer" parent="."]
 wait_time = 0.25
 autostart = true
+
+[node name="Node2D" parent="." instance=ExtResource("1_v24ai")]
+position = Vector2(560, 188)
 
 [connection signal="timeout" from="Wave_Spawner_Timer" to="." method="_on_wave_spawner_timer_timeout"]
