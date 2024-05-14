@@ -12,8 +12,13 @@ public partial class WaveManager : Node2D
 	[Export]
 	private PackedScene enemyScene; // Load enemy scene here
 
+	private Timer spawnTimer;
+	
 	public override void _Ready()
 	{
+
+		spawnTimer = GetNode<Timer>("Timer");
+		spawnTimer.Start();
 		
 		// Start spawning waves
 		SpawnWave();
@@ -24,32 +29,53 @@ public partial class WaveManager : Node2D
 		// Check if there are more waves to spawn
 		if (currentWaveIndex < waveSpawnScores.Length)
 		{
-			// Spawn enemies based on spawn score
-			int spawnScore = waveSpawnScores[currentWaveIndex];
-
-			while (spawnScore > 0)
-			{
-				var instance = enemyScene.Instantiate();
-				if (instance is not BaseEnemy spawnedEnemy)
-				{
-					GD.Print("Couldn't Find SHIT");
-					return;					
-				}
-				AddChild(instance);
-				spawnedEnemy.Position = GetRandomSpawnPositionOutsideCameraView();
-				GD.Print("Wave ", currentWaveIndex);
-				spawnScore -= spawnedEnemy.Score;
-			}
-			currentWaveIndex++; // Move to the next wave
+			spawnTimer.Start();
 		}
 	}
 
 	private Vector2 GetRandomSpawnPositionOutsideCameraView()
 	{
-		// Logic to generate a random position outside of camera view
-		// You can customize this based on your game's design
-		// For simplicity, let's assume enemies spawn at fixed positions outside of camera view
-		// You may need to adjust this based on your game's requirements
-		return new Vector2(-100, -100); // Example position outside of camera view
+		// Get the size of the viewport
+		Vector2 viewportSize = GetViewportRect().Size;
+
+		// Define the boundaries outside of the viewport
+		float minX = -viewportSize.X / 2;
+		float maxX = viewportSize.X / 2;
+		float minY = -viewportSize.Y / 2;
+		float maxY = viewportSize.Y / 2;
+
+		// Generate random coordinates within the boundaries
+		float randomX = (float)GD.RandRange(minX, maxX);
+		float randomY = (float)GD.RandRange(minY, maxY);
+
+		// Return the random position
+		return new Vector2(randomX, randomY);
+	}
+	
+	private void _on_timer_timeout()
+	{
+		// Spawn enemies based on spawn score
+		int spawnScore = waveSpawnScores[currentWaveIndex];
+
+		var instance = enemyScene.Instantiate();
+		if (instance is not BaseEnemy spawnedEnemy)
+		{
+			GD.Print("Couldn't Find SHIT");
+			return;
+		}
+		AddChild(instance);
+		spawnedEnemy.Position = GetRandomSpawnPositionOutsideCameraView();
+		GD.Print("Wave ", spawnScore);
+		spawnScore -= spawnedEnemy.Score;
+		
+		// Check if spawn score is depleted or timer should stop
+		if (spawnScore <= 0)
+		{
+			currentWaveIndex++;
+			spawnTimer.Stop();
+			SpawnWave(); // Move to the next wave
+		}
 	}
 }
+
+
