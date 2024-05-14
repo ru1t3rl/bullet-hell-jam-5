@@ -26,19 +26,19 @@ public partial class WaveManager : Node2D
 		{
 			// Spawn enemies based on spawn score
 			int spawnScore = waveSpawnScores[currentWaveIndex];
-			// Logic to spawn enemies based on spawn score
-			for (int i = 0; i < spawnScore; i++)
+
+			while (spawnScore > 0)
 			{
 				var instance = enemyScene.Instantiate();
 				if (instance is not BaseEnemy spawnedEnemy)
 				{
 					GD.Print("Couldn't Find SHIT");
-					return;
+					return;					
 				}
 				AddChild(instance);
-				spawnedEnemy.Position = new Vector2(50, 50);
-				GD.Print("Wave ", spawnScore);
-				
+				spawnedEnemy.Position = GetRandomSpawnPositionOutsideCameraView();
+				GD.Print("Wave ", currentWaveIndex);
+				spawnScore -= spawnedEnemy.Score;
 			}
 			currentWaveIndex++; // Move to the next wave
 		}

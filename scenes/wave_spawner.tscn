@@ -9,6 +9,5 @@ wait_time = 0.25
 autostart = true
 
 [node name="Node2D" parent="." instance=ExtResource("1_v24ai")]
-position = Vector2(560, 188)
 
 [connection signal="timeout" from="Wave_Spawner_Timer" to="." method="_on_wave_spawner_timer_timeout"]
