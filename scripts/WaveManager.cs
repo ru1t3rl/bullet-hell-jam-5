@@ -6,20 +6,15 @@ public partial class WaveManager : Node2D
 {
 	// Define variables to store wave data
 	private int currentWaveIndex = 0;
-	
-	[Export]
-	private int[] waveSpawnScores = { 100, 200, 300 }; // Example spawn scores for each wave
-	[Export]
-	private PackedScene enemyScene; // Load enemy scene here
+	private int spawnScore;
+	[Export] private int[] waveSpawnScores = { 15, 15,15 }; // Example spawn scores for each wave
+	[Export] private PackedScene enemyScene; // Load enemy scene here
 
 	private Timer spawnTimer;
-	
+
 	public override void _Ready()
 	{
-
 		spawnTimer = GetNode<Timer>("Timer");
-		spawnTimer.Start();
-		
 		// Start spawning waves
 		SpawnWave();
 	}
@@ -30,6 +25,7 @@ public partial class WaveManager : Node2D
 		if (currentWaveIndex < waveSpawnScores.Length)
 		{
 			spawnTimer.Start();
+			spawnScore = waveSpawnScores[currentWaveIndex];
 		}
 	}
 
@@ -51,31 +47,31 @@ public partial class WaveManager : Node2D
 		// Return the random position
 		return new Vector2(randomX, randomY);
 	}
-	
+
 	private void _on_timer_timeout()
 	{
-		// Spawn enemies based on spawn score
-		int spawnScore = waveSpawnScores[currentWaveIndex];
+		if (!spawnTimer.IsStopped())
+		{
+			var instance = enemyScene.Instantiate();
+			if (instance is not BaseEnemy spawnedEnemy)
+			{
+				GD.Print("Couldn't Find SHIT");
+				return;
+			}
 
-		var instance = enemyScene.Instantiate();
-		if (instance is not BaseEnemy spawnedEnemy)
-		{
-			GD.Print("Couldn't Find SHIT");
-			return;
-		}
-		AddChild(instance);
-		spawnedEnemy.Position = GetRandomSpawnPositionOutsideCameraView();
-		GD.Print("Wave ", spawnScore);
-		spawnScore -= spawnedEnemy.Score;
-		
-		// Check if spawn score is depleted or timer should stop
-		if (spawnScore <= 0)
-		{
-			currentWaveIndex++;
-			spawnTimer.Stop();
-			SpawnWave(); // Move to the next wave
+			AddChild(instance);
+			spawnedEnemy.Position = GetRandomSpawnPositionOutsideCameraView();
+			spawnScore -= spawnedEnemy.Score;
+			GD.Print("Wave: ", currentWaveIndex);
+			GD.Print("Scores: ", spawnScore);
+
+			// Check if spawn score is depleted or timer should stop
+			if (spawnScore <= 0)
+			{
+				currentWaveIndex++;
+				spawnTimer.Stop();
+				SpawnWave(); // Move to the next wave
+			}
 		}
 	}
 }
-
-
