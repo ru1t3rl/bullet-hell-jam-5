@@ -1,40 +1,59 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using BulletHellJam5.Enemies;
 
 public partial class WaveManager : Node2D
 {
 	// Define variables to store wave data
-	private int currentWaveIndex = 0;
-	private int spawnScore;
-	[Export] private int[] waveSpawnScores = { 15, 15,15 }; // Example spawn scores for each wave
-	[Export] private PackedScene enemyScene; // Load enemy scene here
-
-	private Timer spawnTimer;
+	private int currentWaveIndex = 0; 
+	// Remaining spawn score for the current wave
+	private int spawnScore; 
+	// Example spawn scores for each wave
+	[Export] private int[] waveSpawnScores = { 15, 15, 15 }; 
+	// Load enemy scene here
+	[Export] private PackedScene[] enemyScenes; 
+	// Lists of enemy scenes for each wave
+	private List<PackedScene>[] waveEnemyLists; 
+	private Timer spawnTimer; 
 
 	public override void _Ready()
 	{
 		spawnTimer = GetNode<Timer>("Timer");
+		
+		// Initialize the list of enemies for each wave
+		InitializeWaveEnemyLists();
+		
 		// Start spawning waves
 		SpawnWave();
 	}
 
+	// Initialize the list of enemies for each wave
+	private void InitializeWaveEnemyLists()
+	{
+
+		// Initialize the array to hold lists of enemy scenes per wave
+		waveEnemyLists = new List<PackedScene>[waveSpawnScores.Length];
+		for (int i = 0; i < waveSpawnScores.Length; i++)
+		{
+			// Create a new list for each wave and add all enemy scenes for current wave
+			waveEnemyLists[i] = new List<PackedScene>();
+			waveEnemyLists[i].AddRange(enemyScenes);
+		}
+	}
+
 	private void SpawnWave()
 	{
-		// Check if there are more waves to spawn
+		// Check if there are more waves to spawn and start the timer
 		if (currentWaveIndex < waveSpawnScores.Length)
 		{
 			spawnTimer.Start();
 			spawnScore = waveSpawnScores[currentWaveIndex];
-			GD.Print("Current Wave: ",currentWaveIndex," Wave Score: ", spawnScore);
 		}
-		
 	}
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <returns></returns>
+
+	// Generate a random spawnPosition around the edge of the camera view
 	private Vector2 GetRandomSpawnPositionOutsideCameraView()
 	{
 		// Get the size of the viewport
@@ -52,36 +71,48 @@ public partial class WaveManager : Node2D
 		return new Vector2(randomX, randomY);
 	}
 
+	//Handle Timer timeout event which spawns enemies
 	private void _on_timer_timeout()
 	{
-		if (!spawnTimer.IsStopped())
+		// Check if the timer is running and currentWaveIndex is within bounds
+		if (!spawnTimer.IsStopped() && currentWaveIndex < waveEnemyLists.Length)
 		{
-			var instance = enemyScene.Instantiate();
-			if (instance is not BaseEnemy spawnedEnemy)
+			// Check if there are enemies left to spawn
+			if (spawnScore > 0 && waveEnemyLists[currentWaveIndex].Count > 0)
 			{
-				GD.Print("Couldn't Find SHIT");
-				return;
-			}
-			if (spawnScore >= spawnedEnemy.Score)
-			{
-				AddChild(instance);
-				spawnedEnemy.Position = GetRandomSpawnPositionOutsideCameraView();
-				spawnScore -= spawnedEnemy.Score;
-				GD.Print("Spawning: ");
+				// Select a random enemy scene from one the list
+				int randomIndex = (int)GD.RandRange(0, waveEnemyLists[currentWaveIndex].Count-1);
+				var enemyScene = waveEnemyLists[currentWaveIndex][randomIndex];
 
-			}
-			
-			GD.Print("Wave: ", currentWaveIndex);
-			GD.Print("Scores: ", spawnScore);
-			
-			// Check if spawn score is depleted or timer should stop
-			if (spawnScore <= 0)
-			{
-				currentWaveIndex++;
-				spawnTimer.Stop();
-				SpawnWave(); // Move to the next wave
-			}
+				// Instantiate the selected enemy scene
+				var instance = enemyScene.Instantiate();
+				// Check if instantiated node is an enemy
+				if (instance is not BaseEnemy spawnedEnemy)
+					return;
+				
+				// Check if the spawn score is sufficient to spawn an enemy
+				if (spawnScore >= spawnedEnemy.Score)
+				{
+					// Add enemy to the scene and set its position and deduct from score value
+					AddChild(instance);
+					spawnedEnemy.Position = GetRandomSpawnPositionOutsideCameraView();
+					spawnScore -= spawnedEnemy.Score;
+				}
 
+				// Check if spawn score is depleted or timer should stop
+				if (spawnScore <= 0)
+				{
+					// Increase wave index, stop the timer and start spawning the next wave
+					currentWaveIndex++;
+					spawnTimer.Stop();
+					SpawnWave(); 
+				}
+			}
+		}
+		else
+		{
+			// If currentWaveIndex is out of bounds, stop the timer
+			spawnTimer.Stop();
 		}
 	}
 }
