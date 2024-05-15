@@ -26,19 +26,23 @@ public partial class WaveManager : Node2D
 		{
 			spawnTimer.Start();
 			spawnScore = waveSpawnScores[currentWaveIndex];
+			GD.Print("Current Wave: ",currentWaveIndex," Wave Score: ", spawnScore);
 		}
+		
 	}
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
 	private Vector2 GetRandomSpawnPositionOutsideCameraView()
 	{
 		// Get the size of the viewport
 		Vector2 viewportSize = GetViewportRect().Size;
 
-		// Define the boundaries outside of the viewport
-		float minX = -viewportSize.X / 2;
-		float maxX = viewportSize.X / 2;
-		float minY = -viewportSize.Y / 2;
-		float maxY = viewportSize.Y / 2;
+		// Define the spawn boundaries outside of the viewport
+		float minX = -viewportSize.X / 2, maxX = viewportSize.X / 2;
+		float minY = -viewportSize.Y / 2, maxY = viewportSize.Y / 2;
 
 		// Generate random coordinates within the boundaries
 		float randomX = (float)GD.RandRange(minX, maxX);
@@ -58,13 +62,18 @@ public partial class WaveManager : Node2D
 				GD.Print("Couldn't Find SHIT");
 				return;
 			}
+			if (spawnScore >= spawnedEnemy.Score)
+			{
+				AddChild(instance);
+				spawnedEnemy.Position = GetRandomSpawnPositionOutsideCameraView();
+				spawnScore -= spawnedEnemy.Score;
+				GD.Print("Spawning: ");
 
-			AddChild(instance);
-			spawnedEnemy.Position = GetRandomSpawnPositionOutsideCameraView();
-			spawnScore -= spawnedEnemy.Score;
+			}
+			
 			GD.Print("Wave: ", currentWaveIndex);
 			GD.Print("Scores: ", spawnScore);
-
+			
 			// Check if spawn score is depleted or timer should stop
 			if (spawnScore <= 0)
 			{
@@ -72,6 +81,7 @@ public partial class WaveManager : Node2D
 				spawnTimer.Stop();
 				SpawnWave(); // Move to the next wave
 			}
+
 		}
 	}
 }
