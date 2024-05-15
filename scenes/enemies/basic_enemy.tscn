@@ -16,6 +16,7 @@ _timeBetweenShots = 400
 _maxDestinationRange = 250.0
 _rotationSpeed = 5.0
 _health = 3.0
+_score = 15
 _speed = 50.0
 _powerupDropchange = 0.1
 

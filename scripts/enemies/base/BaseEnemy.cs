@@ -10,6 +10,10 @@ public abstract partial class BaseEnemy : CharacterBody2D
 	public float Health => _health;
 
 	[Export]
+	protected int _score;
+	public int Score => _score;
+	
+	[Export]
 	protected float _speed;
 
 	[Export(PropertyHint.Range, "0, 1, 0.1f")]
