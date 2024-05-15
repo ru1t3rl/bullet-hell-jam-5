@@ -1,7 +1,8 @@
-using Godot;
 using System;
+using Godot;
 using System.Collections.Generic;
 using BulletHellJam5.Enemies;
+using static System.Random;
 
 public partial class WaveManager : Node2D
 {
@@ -15,11 +16,23 @@ public partial class WaveManager : Node2D
 	[Export] private PackedScene[] enemyScenes; 
 	// Lists of enemy scenes for each wave
 	private List<PackedScene>[] waveEnemyLists; 
-	private Timer spawnTimer; 
+	private Timer spawnTimer;
 
+	private int _seed; // seed for random number Gen
+	private Random random;
+
+	[Export]
+	public int Seed // Property to set the seed value from the editor
+	{
+		get { return _seed; }
+		set { _seed = value; }
+	}
+	
 	public override void _Ready()
 	{
 		spawnTimer = GetNode<Timer>("Timer");
+
+		random = new Random(_seed);
 		
 		// Initialize the list of enemies for each wave
 		InitializeWaveEnemyLists();
@@ -81,7 +94,7 @@ public partial class WaveManager : Node2D
 			if (spawnScore > 0 && waveEnemyLists[currentWaveIndex].Count > 0)
 			{
 				// Select a random enemy scene from one the list
-				int randomIndex = (int)GD.RandRange(0, waveEnemyLists[currentWaveIndex].Count-1);
+				int randomIndex = random.Next(0, waveEnemyLists[currentWaveIndex].Count-1);
 				var enemyScene = waveEnemyLists[currentWaveIndex][randomIndex];
 
 				// Instantiate the selected enemy scene
