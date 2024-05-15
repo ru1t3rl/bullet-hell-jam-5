@@ -5,56 +5,60 @@ namespace BulletHellJam5.Enemies;
 
 public abstract partial class BaseEnemy : CharacterBody2D
 {
-    [Export]
-    protected float _health;
-    public float Health => _health;
+	[Export]
+	protected float _health;
+	public float Health => _health;
 
-    [Export]
-    protected float _speed;
+	[Export]
+	protected int _score;
+	public int Score => _score;
+	
+	[Export]
+	protected float _speed;
 
-    [Export(PropertyHint.Range, "0, 1, 0.1f")]
-    protected float _powerupDropchange = 0.5f;
+	[Export(PropertyHint.Range, "0, 1, 0.1f")]
+	protected float _powerupDropchange = 0.5f;
 
-    private EnemyState _state = EnemyState.Idle;
+	private EnemyState _state = EnemyState.Idle;
 
-    public EnemyState State
-    {
-        get => _state;
-        protected set
-        {
-            _state = value;
-            EmitSignal(nameof(OnStateChange), (int)_state);
-        }
-    }
+	public EnemyState State
+	{
+		get => _state;
+		protected set
+		{
+			_state = value;
+			EmitSignal(nameof(OnStateChange), (int)_state);
+		}
+	}
 
-    public override void _PhysicsProcess(double delta)
-    {
-        Move();
-        MoveAndSlide();
-    }
+	public override void _PhysicsProcess(double delta)
+	{
+		Move();
+		MoveAndSlide();
+	}
 
-    protected abstract void Move();
+	protected abstract void Move();
 
-    public virtual void Shoot()
-    {
-        State = EnemyState.Shooting;
-        EmitSignal(nameof(OnShoot));
-    }
+	public virtual void Shoot()
+	{
+		State = EnemyState.Shooting;
+		EmitSignal(nameof(OnShoot));
+	}
 
-    public virtual void TakeDamage(float damage)
-    {
-        _health -= damage;
-        EmitSignal(nameof(OnTakeDamage), Health);
+	public virtual void TakeDamage(float damage)
+	{
+		_health -= damage;
+		EmitSignal(nameof(OnTakeDamage), Health);
 
-        if (_health <= 0)
-        {
-            Die();
-        }
-    }
+		if (_health <= 0)
+		{
+			Die();
+		}
+	}
 
-    protected virtual void Die()
-    {
-        State = EnemyState.Dead;
-        EmitSignal(nameof(OnDie), this);
-    }
+	protected virtual void Die()
+	{
+		State = EnemyState.Dead;
+		EmitSignal(nameof(OnDie), this);
+	}
 }
