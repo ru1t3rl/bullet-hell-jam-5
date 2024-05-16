@@ -41,12 +41,20 @@ public abstract partial class BaseProjectile : Area2D
 		Rotation = float.Atan2(velocity.Y, velocity.X);
 	}
 
-	private void OnBodyEntered(Node2D body)
+	private void _on_area_2d_area_entered(Area2D area)
 	{
-		EmitSignal(nameof(OnCollision), body);
+		EmitSignal(nameof(OnCollision), area);
 
 		// TODO [LR]: When player is in game implement collision check to change color
+
 	}
+
+	// private void OnBodyEntered(Node2D body)
+	// {
+	// 	EmitSignal(nameof(OnCollision), body);
+	//
+	// 	// TODO [LR]: When player is in game implement collision check to change color
+	// }
 
 	private void LifespanTimerOnTimeout()
 	{

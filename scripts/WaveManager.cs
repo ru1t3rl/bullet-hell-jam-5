@@ -11,7 +11,7 @@ public partial class WaveManager : Node2D
 	// Remaining spawn score for the current wave
 	private int spawnScore; 
 	// Example spawn scores for each wave
-	[Export] private int[] waveSpawnScores = { 15, 15, 15 }; 
+	[Export] private int[] waveSpawnScores = { 150, 150, 150 }; 
 	// Load enemy scene here
 	[Export] private PackedScene[] enemyScenes; 
 	// Lists of enemy scenes for each wave
