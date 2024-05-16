@@ -15,20 +15,22 @@ public partial class Planet : Node2D
 		Setup();
 	}
 
+	[Export]
+	private float _radius = 0;
+
 	private void Setup()
 	{
 		_viewPortSize = GetViewportRect().Size;
 		Position = _viewPortSize / 2;
 
-		float radius = 1;
 		float angleStep = Mathf.Tau / _maxZones; // Calculate the angle between each zone
 
 		for (int i = 0; i < _maxZones; i++)
 		{
 			// Calculate the position of the zone using polar coordinates
 			float angle = i * angleStep;
-			float x = Position.X + radius * Mathf.Cos(angle);
-			float y = Position.Y + radius * Mathf.Sin(angle);
+			float x = Position.X + _radius * Mathf.Cos(angle);
+			float y = Position.Y + _radius * Mathf.Sin(angle);
 
 			
 			var instance = _resourceZones[0].Instantiate();
@@ -38,9 +40,9 @@ public partial class Planet : Node2D
 				return;
 			}
 			
-			resourceZone.Position = new Vector2(x, y);
-
 			AddChild(instance);
+			resourceZone.GlobalPosition = new Vector2(x, y);
+
 		}
 	}
 	

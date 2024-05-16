@@ -76,7 +76,7 @@ public partial class BaseResourceZone : Area2D
 	protected virtual void Die()
 	{
 
-		EmitSignal(nameof(OnZoneDestroyed));
+		//EmitSignal(nameof(OnZoneDestroyed));
 		QueueFree();
 		
 	}

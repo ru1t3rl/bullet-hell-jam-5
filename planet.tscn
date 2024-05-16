@@ -3,12 +3,13 @@
 [ext_resource type="Script" path="res://scripts/Planet/Planet.cs" id="1_bxpsf"]
 [ext_resource type="PackedScene" uid="uid://dq127cnvjqxwf" path="res://planet_section.tscn" id="1_xjcnc"]
 [ext_resource type="PackedScene" uid="uid://wycxpj88g1j3" path="res://scenes/resource-zones/resource_zone.tscn" id="2_1t7kg"]
-[ext_resource type="PackedScene" path="res://WaveManager.tscn" id="3_ejukb"]
+[ext_resource type="PackedScene" uid="uid://dkvn8vv3l6hmh" path="res://WaveManager.tscn" id="3_ejukb"]
 
 [node name="Planet" type="Node2D"]
 script = ExtResource("1_bxpsf")
 _maxZones = 5
 _resourceZones = Array[PackedScene]([ExtResource("2_1t7kg")])
+_radius = 150.0
 
 [node name="Node2D" parent="." instance=ExtResource("1_xjcnc")]
 position = Vector2(15, -10)

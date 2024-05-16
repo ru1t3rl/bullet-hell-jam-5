@@ -4,7 +4,6 @@
 [ext_resource type="Resource" uid="uid://bajtwvjdgiky" path="res://resources/example_resource.tres" id="2_8uc03"]
 
 [node name="Resource Zone" type="Area2D"]
-position = Vector2(889, 457)
 script = ExtResource("1_r6i8m")
 _currency = ExtResource("2_8uc03")
 _health = 3
