@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctdvwxqug8cgw"]
+
+[ext_resource type="PackedScene" uid="uid://w2ybjhoi8rl5" path="res://scenes/enemies/basic_enemy.tscn" id="1_yocpo"]
+[ext_resource type="Script" path="res://scripts/Player/Player.gd" id="2_ffh3v"]
+[ext_resource type="Texture2D" uid="uid://bk4p8dkkaccs2" path="res://icon.svg" id="3_0dulm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n0ert"]
+size = Vector2(162, 30)
+
+[node name="Test-level" type="Node2D"]
+
+[node name="Basic Enemy" parent="." instance=ExtResource("1_yocpo")]
+position = Vector2(708, 343)
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+script = ExtResource("2_ffh3v")
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+position = Vector2(627, 471)
+scale = Vector2(1.35156, 0.25)
+texture = ExtResource("3_0dulm")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(627, 471)
+shape = SubResource("RectangleShape2D_n0ert")
+metadata/_edit_lock_ = true
