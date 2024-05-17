@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://vtm3orwe5day"]
+
+[ext_resource type="PackedScene" uid="uid://dkvn8vv3l6hmh" path="res://WaveManager.tscn" id="1_v24ai"]
+
+[node name="WaveScene" type="Node2D"]
+
+[node name="Wave_Spawner_Timer" type="Timer" parent="."]
+wait_time = 0.25
+autostart = true
+
+[node name="Node2D" parent="." instance=ExtResource("1_v24ai")]
+
+[connection signal="timeout" from="Wave_Spawner_Timer" to="." method="_on_wave_spawner_timer_timeout"]
