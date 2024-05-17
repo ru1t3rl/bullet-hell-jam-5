@@ -7,7 +7,7 @@
 radius = 27.0
 height = 122.0
 
-[node name="Basic Projectile" type="Area2D" node_paths=PackedStringArray("_sprite")]
+[node name="Basic Projectile" type="Area2D" node_paths=PackedStringArray("_sprite") groups=["Basic_Projectile"]]
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_myi44")
 speed = 300.0
@@ -22,4 +22,4 @@ rotation = -4.71238
 shape = SubResource("CapsuleShape2D_d8xru")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
-[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

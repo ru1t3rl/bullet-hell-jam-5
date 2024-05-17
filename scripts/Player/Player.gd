@@ -13,14 +13,14 @@ var previous_angle = 0
 func _physics_process(delta):
 	var input_direction = get_input_direction()
 	var angle = get_angle()
-	var angle_difference = angle - previous_angle
+	var angle_diff = angle - previous_angle
 	
 	if input_direction == 1:
 		rotate_around_point(Planet_Center_Position, SPEED * delta)
-		rotate(angle_difference)
+		rotate(angle_diff)
 	elif input_direction == -1:
 		rotate_around_point(Planet_Center_Position, -SPEED * delta)
-		rotate(angle_difference)
+		rotate(angle_diff)
 		
 	previous_angle = angle
 	move_and_slide()
@@ -35,3 +35,10 @@ func rotate_around_point(point: Vector2, angle: float):
 	var offset = self.position - point
 	var rotated_offset = offset.rotated(angle)
 	self.position = point + rotated_offset
+
+func reflect() :
+	pass
+
+func _on_area_2d_area_entered(area):
+	pass
+	#print("Collided")
