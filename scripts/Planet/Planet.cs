@@ -42,7 +42,8 @@ public partial class Planet : Node2D
 			
 			AddChild(instance);
 			resourceZone.GlobalPosition = new Vector2(x, y);
-
+			resourceZone.GlobalRotation = angle;
+			
 		}
 	}
 	

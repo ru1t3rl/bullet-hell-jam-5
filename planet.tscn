@@ -10,7 +10,6 @@
 script = ExtResource("1_bxpsf")
 _maxZones = 5
 _resourceZones = Array[PackedScene]([ExtResource("2_1t7kg")])
-_radius = 150.0
 
 [node name="Resource_Zone" parent="." instance=ExtResource("1_xjcnc")]
 position = Vector2(15, -10)
