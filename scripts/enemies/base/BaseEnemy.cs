@@ -5,60 +5,102 @@ namespace BulletHellJam5.Enemies;
 
 public abstract partial class BaseEnemy : CharacterBody2D
 {
-	[Export]
-	protected float _health;
-	public float Health => _health;
+    protected ScoreAdjuster _scoreAdjuster;
 
-	[Export]
-	protected int _score;
-	public int Score => _score;
-	
-	[Export]
-	protected float _speed;
+    [Export]
+    public ScoreAdjuster ScoreAdjuster
+    {
+        get => _scoreAdjuster ??= FindScoreAdjuster();
+        set
+        {
+            _scoreAdjuster = value;
+            UpdateConfigurationWarnings();
+        }
+    }
 
-	[Export(PropertyHint.Range, "0, 1, 0.1f")]
-	protected float _powerupDropchange = 0.5f;
+    [Export]
+    protected float _health;
+    public float Health => _health;
 
-	private EnemyState _state = EnemyState.Idle;
+    [Export]
+    protected int _score;
+    public int Score => _score;
 
-	public EnemyState State
-	{
-		get => _state;
-		protected set
-		{
-			_state = value;
-			EmitSignal(nameof(OnStateChange), (int)_state);
-		}
-	}
+    [Export]
+    protected float _speed;
 
-	public override void _PhysicsProcess(double delta)
-	{
-		Move();
-		MoveAndSlide();
-	}
+    [Export(PropertyHint.Range, "0, 1, 0.1f")]
+    protected float _powerupDropchange = 0.5f;
 
-	protected abstract void Move();
+    private EnemyState _state = EnemyState.Idle;
 
-	public virtual void Shoot()
-	{
-		State = EnemyState.Shooting;
-		EmitSignal(nameof(OnShoot));
-	}
+    public EnemyState State
+    {
+        get => _state;
+        protected set
+        {
+            _state = value;
+            EmitSignal(nameof(OnStateChange), (int)_state);
+        }
+    }
 
-	public virtual void TakeDamage(float damage)
-	{
-		_health -= damage;
-		EmitSignal(nameof(OnTakeDamage), Health);
+    public override void _PhysicsProcess(double delta)
+    {
+        Move();
+        MoveAndSlide();
+    }
 
-		if (_health <= 0)
-		{
-			Die();
-		}
-	}
+    protected abstract void Move();
 
-	protected virtual void Die()
-	{
-		State = EnemyState.Dead;
-		EmitSignal(nameof(OnDie), this);
-	}
+    public virtual void Shoot()
+    {
+        State = EnemyState.Shooting;
+        EmitSignal(nameof(OnShoot));
+    }
+
+    public virtual void TakeDamage(float damage)
+    {
+        _health -= damage;
+        EmitSignal(nameof(OnTakeDamage), Health);
+
+        if (Health <= 0)
+        {
+            Die();
+        }
+    }
+
+    protected virtual void Die()
+    {
+        State = EnemyState.Dead;
+        ScoreAdjuster?.AdjustScore(Score);
+        EmitSignal(nameof(OnDie), this);
+    }
+
+    private ScoreAdjuster FindScoreAdjuster()
+    {
+        var children = GetChildren();
+        foreach (var child in children)
+        {
+            if (child is ScoreAdjuster score)
+            {
+                return score;
+            }
+        }
+
+        return null;
+    }
+
+    public override string[] _GetConfigurationWarnings()
+    {
+        var scoreAdjuster = FindScoreAdjuster();
+        if (scoreAdjuster is null)
+        {
+            GD.Print("Shold show warbubg");
+            return ["This node must have a ScoreAdjuster child"];
+        }
+
+        GD.Print("Alll good");
+
+        return [];
+    }
 }

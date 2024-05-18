@@ -1,3 +1,4 @@
+using BulletHellJam5.Enemies;
 using Godot;
 
 namespace BulletHellJam5.Projectiles;
@@ -65,6 +66,12 @@ public abstract partial class BaseProjectile : Area2D
         }
 
         EmitSignal(nameof(OnCollision), body);
+
+        if (_type == ProjectileType.Allied && body is BaseEnemy enemy)
+        {
+            enemy.TakeDamage(_damage);
+            SetProcess(false);
+        }
     }
 
     private void LifespanTimerOnTimeout()

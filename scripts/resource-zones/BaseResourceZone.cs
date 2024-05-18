@@ -41,7 +41,6 @@ public partial class BaseResourceZone : Area2D
         EmitSignal(nameof(OnCollision), area);
         if (area is not BaseProjectile projectile)
         {
-            //GD.Print("Colliding with anything thats not a bullet");
             return;
         }
 
@@ -53,7 +52,6 @@ public partial class BaseResourceZone : Area2D
         EmitSignal(nameof(OnCollision), body);
         if (body is not BaseProjectile projectile)
         {
-            //GD.Print("Colliding with anything thats not a bullet");
             return;
         }
 
@@ -62,7 +60,6 @@ public partial class BaseResourceZone : Area2D
 
     public void TakeDamage(int amount)
     {
-        //GD.Print("is this working?");
         _health -= amount;
         EmitSignal(nameof(OnTakeDamage), amount);
 
@@ -74,9 +71,8 @@ public partial class BaseResourceZone : Area2D
 
     protected virtual void Die()
     {
-        var onZoneDestroyed = nameof(OnZoneDestroyed);
-        EmitSignal(onZoneDestroyed);
-        //QueueFree();
+        EmitSignal(nameof(OnZoneDestroyed), 1);
+        QueueFree();
     }
 
     public void TakeResources(int amount)
