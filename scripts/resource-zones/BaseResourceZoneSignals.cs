@@ -15,4 +15,7 @@ public partial class BaseResourceZone
 
     [Signal]
     public delegate void OnResourcesGeneratedEventHandler(int numberOfResources);
+    
+    [Signal]
+    public delegate void OnZoneDestroyedEventHandler(int amount);
 }

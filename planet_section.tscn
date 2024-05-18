@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://dq127cnvjqxwf"]
+
+[ext_resource type="Script" path="res://scripts/resource-zones/BaseResourceZone.cs" id="1_eiqn8"]
+[ext_resource type="Script" path="res://scripts/Planet/PlanetSection.cs" id="1_mnn4d"]
+[ext_resource type="Texture2D" uid="uid://bdr08bcfv4xoj" path="res://assets/sprites/icons/ic-plannet-health.png" id="1_mnsmo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sgix0"]
+
+[node name="Node2D" type="Node2D"]
+scale = Vector2(2.48, 2.48)
+script = ExtResource("1_mnn4d")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.0390625, 0.0390625)
+texture = ExtResource("1_mnsmo")
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("1_eiqn8")
+_health = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_sgix0")
+
+[connection signal="OnCollision" from="Area2D" to="." method="_on_area_2d_on_collision"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
