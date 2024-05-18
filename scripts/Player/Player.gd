@@ -29,6 +29,8 @@ func get_input_direction():
 	return int(Input.is_action_pressed("Rotate_Clockwise")) - int(Input.is_action_pressed("Rotate_AntiClockwise"))
 
 func get_angle():
+	#Returns the angle (in radians) between the line connecting the player's position and the center of the planet and the x-axis.
+	#The angle is measured counterclockwise from the positive x-axis.
 	return atan2(self.position.y - Planet_Center_Position.y, self.position.x - Planet_Center_Position.x)
 
 func rotate_around_point(point: Vector2, angle: float):
@@ -36,9 +38,11 @@ func rotate_around_point(point: Vector2, angle: float):
 	var rotated_offset = offset.rotated(angle)
 	self.position = point + rotated_offset
 
-func reflect() :
-	pass
-
 func _on_area_2d_area_entered(area):
+	#var Incident : Vector2 = Vector2.ZERO
+	#var Normal : Vector2 = Vector2(self.position.x - Planet_Center_Position.x, self.position.y - Planet_Center_Position.y).normalized()
+	#var Reflected : Vector2 = Vector2.ZERO
+	
+	
 	pass
 	#print("Collided")
