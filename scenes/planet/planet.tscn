@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://bp1avupskson1"]
 
 [ext_resource type="Script" path="res://scripts/Planet/Planet.cs" id="1_bxpsf"]
-[ext_resource type="PackedScene" uid="uid://dq127cnvjqxwf" path="res://planet_section.tscn" id="1_xjcnc"]
-[ext_resource type="PackedScene" uid="uid://wycxpj88g1j3" path="res://scenes/resource-zones/resource_zone.tscn" id="2_1t7kg"]
-[ext_resource type="PackedScene" uid="uid://dkvn8vv3l6hmh" path="res://WaveManager.tscn" id="3_ejukb"]
+[ext_resource type="PackedScene" uid="uid://dq127cnvjqxwf" path="res://scenes/planet/planet_section.tscn" id="1_xjcnc"]
+[ext_resource type="PackedScene" uid="uid://wycxpj88g1j3" path="res://scenes/planet/resource-zones/resource_zone.tscn" id="2_1t7kg"]
+[ext_resource type="PackedScene" uid="uid://dkvn8vv3l6hmh" path="res://scenes/waves/wave-manager.tscn" id="3_ejukb"]
 [ext_resource type="Texture2D" uid="uid://2qs3cvpb2r2u" path="res://assets/sprites/planets/planet00.png" id="5_i23u2"]
 
 [node name="Planet" type="Node2D"]
