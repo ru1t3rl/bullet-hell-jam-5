@@ -33,6 +33,7 @@ public abstract partial class BaseProjectile : CharacterBody2D
 	}
 
 	protected abstract void Move(double delta);
+<<<<<<< Updated upstream
 	
 	public virtual void Reflect(double delta)
 	{
@@ -44,6 +45,8 @@ public abstract partial class BaseProjectile : CharacterBody2D
 			MoveAndCollide(reflect);
 		}
 	}
+=======
+>>>>>>> Stashed changes
 
 	public override void _PhysicsProcess(double delta)
 	{

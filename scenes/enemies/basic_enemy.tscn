@@ -9,6 +9,8 @@ radius = 49.8197
 
 [node name="Basic Enemy" type="CharacterBody2D"]
 scale = Vector2(0.5, 0.5)
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_8pj8o")
 _projectile = ExtResource("2_ku4j6")
 _numberOfProjectiles = 5
