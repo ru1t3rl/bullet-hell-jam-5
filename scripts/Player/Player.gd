@@ -38,16 +38,6 @@ func rotate_around_point(point: Vector2, angle: float):
 	var rotated_offset = offset.rotated(angle)
 	self.position = point + rotated_offset
 
-<<<<<<< Updated upstream
-func _on_area_2d_area_entered(area):
-	#var Incident : Vector2 = Vector2.ZERO
-	#var Normal : Vector2 = Vector2(self.position.x - Planet_Center_Position.x, self.position.y - Planet_Center_Position.y).normalized()
-	#var Reflected : Vector2 = Vector2.ZERO
-	
-	
-	pass
-	#print("Collided")
-=======
 signal ProjectileDetected
 
 func GetNormal() :
@@ -57,4 +47,3 @@ func _on_area_2d_area_entered(area : Area2D):
 	if area.is_in_group("Projectile"):
 		#print("Area Entered")
 		emit_signal("ProjectileDetected", GetNormal())
->>>>>>> Stashed changes

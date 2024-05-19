@@ -2,7 +2,7 @@ using Godot;
 
 namespace BulletHellJam5.projectiles;
 
-public abstract partial class BaseProjectile : CharacterBody2D
+public abstract partial class BaseProjectile : Area2D
 {
 	[Export]
 	protected float speed;
@@ -33,20 +33,6 @@ public abstract partial class BaseProjectile : CharacterBody2D
 	}
 
 	protected abstract void Move(double delta);
-<<<<<<< Updated upstream
-	
-	public virtual void Reflect(double delta)
-	{
-		KinematicCollision2D collision = MoveAndCollide(velocity * (float)delta);
-		if (collision != null)
-		{
-			var reflect = collision.GetRemainder().Bounce(collision.GetNormal());
-			velocity = velocity.Bounce(collision.GetNormal());
-			MoveAndCollide(reflect);
-		}
-	}
-=======
->>>>>>> Stashed changes
 
 	public override void _PhysicsProcess(double delta)
 	{

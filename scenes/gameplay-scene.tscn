@@ -1,9 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://bg2c3gg2ufk5g"]
+[gd_scene load_steps=2 format=3 uid="uid://bg2c3gg2ufk5g"]
 
-[ext_resource type="PackedScene" uid="uid://c5ifrx6w37aj" path="res://scenes/player/player.tscn" id="1_w5d1s"]
-[ext_resource type="Theme" uid="uid://sojho4d38v24" path="res://assets/MainTheme.tres" id="4_7bvpo"]
-[ext_resource type="Texture2D" uid="uid://bdr08bcfv4xoj" path="res://assets/sprites/icons/ic-plannet-health.png" id="4_jipog"]
-[ext_resource type="Texture2D" uid="uid://d0xbwfkxehqfs" path="res://assets/sprites/icons/ic-score.png" id="5_3scjt"]
+[ext_resource type="PackedScene" uid="uid://c5ifrx6w37aj" path="res://scenes/Player/player.tscn" id="1_w5d1s"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -24,23 +21,19 @@ columns = 2
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/Top Left Container"]
 layout_mode = 2
-texture = ExtResource("4_jipog")
 expand_mode = 5
 
 [node name="Health Label" type="Label" parent="CanvasLayer/Top Left Container"]
 layout_mode = 2
-theme = ExtResource("4_7bvpo")
 text = "100%"
 vertical_alignment = 1
 
 [node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Top Left Container"]
 layout_mode = 2
-texture = ExtResource("5_3scjt")
 expand_mode = 3
 
 [node name="Score Text" type="Label" parent="CanvasLayer/Top Left Container"]
 layout_mode = 2
-theme = ExtResource("4_7bvpo")
 text = "0000"
 vertical_alignment = 1
 
@@ -56,5 +49,4 @@ grow_horizontal = 0
 
 [node name="Label" type="Label" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("4_7bvpo")
 text = "Wave 0"
