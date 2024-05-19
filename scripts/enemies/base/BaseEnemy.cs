@@ -95,11 +95,8 @@ public abstract partial class BaseEnemy : CharacterBody2D
         var scoreAdjuster = FindScoreAdjuster();
         if (scoreAdjuster is null)
         {
-            GD.Print("Shold show warbubg");
             return ["This node must have a ScoreAdjuster child"];
         }
-
-        GD.Print("Alll good");
 
         return [];
     }
