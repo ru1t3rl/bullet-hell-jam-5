@@ -69,6 +69,7 @@ public abstract partial class BaseProjectile : Area2D
 
         if (_type == ProjectileType.Allied && body is BaseEnemy enemy)
         {
+            GD.Print("Enemy got hit");
             enemy.TakeDamage(_damage);
             SetProcess(false);
         }

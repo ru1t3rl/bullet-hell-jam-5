@@ -10,8 +10,18 @@ public partial class GameManager : Node
         set => _instance = value;
     }
 
+    private int _score;
+
     [Export]
-    public int Score { get; set; }
+    public int Score
+    {
+        get => _score;
+        set
+        {
+            _score = value;
+            EmitSignal(nameof(OnAdjustScore), _score);
+        }
+    }
 
     public override void _Ready()
     {
@@ -20,7 +30,8 @@ public partial class GameManager : Node
             QueueFree();
             return;
         }
-        else if (Instance is null)
+
+        if (Instance is null)
         {
             Instance = this;
         }
