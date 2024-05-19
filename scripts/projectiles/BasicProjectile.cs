@@ -17,18 +17,17 @@ public partial class BasicProjectile : BaseProjectile
 	public override void _Ready()
 	{
 		Connect("body_entered", new Callable(this, nameof(OnBodyEntered)));
-		sprite = GetNode<Sprite2D>("ProjectileSprite");
-		CollisionShape = GetNode<CollisionShape2D>("ProjectileCollisionShape");
 	}
 	
 	protected override void Move(double delta)
 	{
+		var _rotationSpeed = 5;
 		
 		Vector2 currentVelocity = isReflected ? reflectedVelocity : velocity;
 		GlobalPosition += currentVelocity * (float)delta;
-		//if (isReflected)
-		//{UpdateSpriteRotation(currentVelocity);}
-		//else{initialDirection = velocity.Normalized();}
+		float targetAngle = float.Atan2(currentVelocity.Y, currentVelocity.X);
+		Rotation = float.Lerp(Rotation, targetAngle, (float)delta * _rotationSpeed);
+		//this.Rotation = Mathf.RadToDeg(Rotation);
 	}
 
 	private void OnBodyEntered(Node body)
@@ -56,17 +55,5 @@ public partial class BasicProjectile : BaseProjectile
 				}
 		}
 	}
-	//private void UpdateSpriteRotation(Vector2 currentVelocity)
-	//{
-	//	if (sprite != null)
-	//	{
-	//		// Get the angle of the velocity vector in radians
-	//		float angle = Mathf.RadToDeg(initialDirection.AngleTo(currentVelocity.Normalized()));
-	//		GD.Print(angle);
-	//		// Update the sprite's rotation (Godot uses radians for rotation)
-	//		sprite.Rotation = angle;
-	//		CollisionShape.Rotation = angle+92;
-	//	}
-	//}
 }
 
