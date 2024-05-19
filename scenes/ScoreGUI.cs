@@ -4,6 +4,6 @@ public partial class ScoreGUI : Label
 {
     private void OnScoreChanged(int score)
     {
-        Text = score.ToString();
+        Text = score.ToString("0000");
     }
 }
