@@ -77,7 +77,7 @@ public partial class BaseResourceZone : Area2D
 	{
 		var onZoneDestroyed = nameof(OnZoneDestroyed);
 		EmitSignal(onZoneDestroyed);
-		//QueueFree();
+		QueueFree();
 		
 	}
 
