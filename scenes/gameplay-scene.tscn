@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bg2c3gg2ufk5g"]
+[gd_scene load_steps=14 format=3 uid="uid://bg2c3gg2ufk5g"]
 
 [ext_resource type="Script" path="res://scripts/utils/ScreenShake.cs" id="1_r1hjh"]
 [ext_resource type="PackedScene" uid="uid://jvafk54xo7ji" path="res://scenes/player/player_updated.tscn" id="1_w5d1s"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bdr08bcfv4xoj" path="res://assets/sprites/icons/ic-plannet-health.png" id="4_jipog"]
 [ext_resource type="Script" path="res://scripts/GameManager.cs" id="5_0i4hx"]
 [ext_resource type="Texture2D" uid="uid://d0xbwfkxehqfs" path="res://assets/sprites/icons/ic-score.png" id="5_3scjt"]
+[ext_resource type="Script" path="res://scripts/player/Player.cs" id="6_rkk7c"]
 [ext_resource type="Script" path="res://scripts/ScoreGUI.cs" id="8_fpkyf"]
 [ext_resource type="Script" path="res://scripts/waves/WaveGUI.cs" id="9_5qqv6"]
 [ext_resource type="PackedScene" path="res://scenes/audio_manager.tscn" id="12_apesn"]
@@ -46,6 +47,7 @@ position = Vector2(663, 328)
 [node name="Player" parent="." instance=ExtResource("1_w5d1s")]
 position = Vector2(665, 149)
 rotation = -1.57079
+script = ExtResource("6_rkk7c")
 _distanceFromCenter = 175.0
 _speed = 5.0
 
