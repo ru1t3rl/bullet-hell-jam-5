@@ -58,4 +58,11 @@ public partial class ScreenShake : Node
         _startPosition = new Vector2(_objectToShake.Position.X, _objectToShake.Position.Y);
         _shakeTime = 0;
     }
+
+    protected override void Dispose(bool disposing)
+    {
+        _objectToShake = null;
+        Instance = null;
+        base.Dispose(disposing);
+    }
 }
