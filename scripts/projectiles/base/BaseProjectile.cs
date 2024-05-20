@@ -86,6 +86,7 @@ public abstract partial class BaseProjectile : Area2D
         if (!isPlayer)
         {
             QueueFree();
+            ScreenShake.Instance.Shake();
         }
     }
 
