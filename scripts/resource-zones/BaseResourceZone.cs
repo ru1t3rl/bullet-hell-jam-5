@@ -22,8 +22,13 @@ public partial class BaseResourceZone : Area2D
 
 	private int _currentNumberOfResources;
 
+    private Polygon2D _polygon;
+    private TextEdit _healthText;
+
 	public override void _Ready()
 	{
+        _polygon = GetNode<Polygon2D>("Polygon2D");
+        _healthText = GetNode<TextEdit>("HealthText");
 		if (_currency is null)
 		{
 			GD.Print("Linked supply resources isn't a valid supply");
@@ -62,9 +67,17 @@ public partial class BaseResourceZone : Area2D
 	{
 		_health -= amount;
 		EmitSignal(nameof(OnTakeDamage), amount);
+        UpdateColor();
+        UpdateText();
+        HealthCheck();
+    }
 
+    //TODO for some reason health is still going below 0
+    private void HealthCheck()
+    {
 		if (_health <= 0)
 		{
+            _health = 0;
 			Die();
 		}
 	}
@@ -107,9 +120,32 @@ public partial class BaseResourceZone : Area2D
 		_resourceGenerationTimer.Start();
 	}
 
+    private void UpdateText()
+    {
+        _healthText.Text = _health.ToString();
+    }
+
 	private void OnResourceTimerTick()
 	{
 		_currentNumberOfResources += _numberOfResourcesPerGeneration;
 		EmitSignal(nameof(OnResourcesGenerated));
+    }
+
+    private void UpdateColor()
+    {
+        if (_polygon == null)
+            return;
+
+        // Calculate the new color based on the health
+        float healthPercentage = _health / (float)_startHealth;
+        Color currentColor = _polygon.Color;
+
+        // Set alpha to 0 if health is less than or equal to 0
+        float newAlpha = _health <= 0 ? 0 : currentColor.A;
+
+        Color newColor =
+            new Color(1.0f, healthPercentage, healthPercentage, newAlpha); // Preserve or update alpha value
+
+        _polygon.Color = newColor;
 	}
 }
