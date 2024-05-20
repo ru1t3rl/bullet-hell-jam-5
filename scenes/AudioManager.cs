@@ -28,7 +28,14 @@ public partial class AudioManager : Node2D
 		planetSfx.Stream = GD.Load<AudioStream>("res://assets/audio/explosionCrunch_001.ogg");
 		zoneSfx.Stream = GD.Load<AudioStream>("res://assets/audio/explosionCrunch_001.ogg");
 		bounce.Stream = GD.Load<AudioStream>("res://assets/audio/impactPlate_heavy_000.ogg");
+
+		PlaySfx(musicPlayer);
 	}
+
+	//protected override void Dispose(bool disposing) {
+		//base.Dispose();
+ 		//Instance = null;
+	//}
 
 	private void InstanceCheck()
 	{
@@ -50,4 +57,5 @@ public partial class AudioManager : Node2D
 	{
 		sfx.Stop();
 	}
+	
 }

@@ -61,10 +61,10 @@ public partial class Planet : Node2D
 	  private void EndGame()
 	{
 		GD.Print("Game Over: Planet destroyed!");
-		AudioManager.Instance.PlaySfx(AudioManager.Instance.planet);
+		AudioManager.Instance.PlaySfx(AudioManager.Instance.planetSfx);
 		CallDeferred(nameof(RestartGame));
 	}
-
+	
 	private void RestartGame()
 	{
 		GetTree().ReloadCurrentScene();
