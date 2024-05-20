@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://i7cecy8eksm8"]
+
+[node name="AudioManager" type="Node2D"]
+
+[node name="MainTheme" type="AudioStreamPlayer" parent="."]
+
+[node name="EnemyFire" type="AudioStreamPlayer" parent="."]
+
+[node name="EnemyDeath" type="AudioStreamPlayer" parent="."]
+
+[node name="ZoneDestroyed" type="AudioStreamPlayer" parent="."]
+
+[node name="PlanetDestoryed" type="AudioStreamPlayer" parent="."]
+
+[node name="PaddleBounce" type="AudioStreamPlayer" parent="."]
