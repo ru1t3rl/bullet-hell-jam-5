@@ -68,8 +68,8 @@ public abstract partial class BaseProjectile : Area2D
 
     protected virtual void OnCollisionWithBody(Node2D body)
     {
-        var colliderIsPlayer = body.IsInGroup("Player");
-        if (colliderIsPlayer)
+        var isPlayer = body is Player;
+        if (isPlayer)
         {
             _type = ProjectileType.Allied;
             _sprite.Modulate = _friendlyColor;
@@ -83,7 +83,7 @@ public abstract partial class BaseProjectile : Area2D
             SetProcess(false);
         }
 
-        if (!colliderIsPlayer)
+        if (!isPlayer)
         {
             QueueFree();
         }

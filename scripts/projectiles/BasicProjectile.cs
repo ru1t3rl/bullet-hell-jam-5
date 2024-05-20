@@ -14,7 +14,7 @@ public partial class BasicProjectile : BaseProjectile
     {
         base.OnCollisionWithBody(body);
 
-        if (body.IsInGroup("Player"))
+        if (body is Player player)
         {
             this.SetCollisionLayerValue(1, false);
             this.SetCollisionMaskValue(1, false);
@@ -23,17 +23,9 @@ public partial class BasicProjectile : BaseProjectile
             this.SetCollisionLayerValue(2, true);
             this.SetCollisionMaskValue(2, true);
 
-            if (body.HasMethod("GetNormal"))
-            {
-                Vector2 Normal = (Vector2)body.Call("GetNormal");
-                Vector2 Incident = Velocity.Normalized();
-                Vector2 Reflected = Incident - 2 * (Incident.Dot(Normal)) * Normal;
-                Velocity = Reflected * Velocity.Length(); // Calculate reflected velocity once
-            }
-            else
-            {
-                GD.Print("The body does not have the method 'GetNormal'");
-            }
+            Vector2 incident = Velocity.Normalized();
+            Vector2 reflected = incident - 2 * (incident.Dot(player.Normal)) * player.Normal;
+            Velocity = reflected * Velocity.Length(); // Calculate reflected velocity once
         }
     }
 }
