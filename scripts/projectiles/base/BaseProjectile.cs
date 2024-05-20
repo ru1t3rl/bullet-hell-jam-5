@@ -6,7 +6,11 @@ namespace BulletHellJam5.Projectiles;
 public abstract partial class BaseProjectile : Area2D
 {
     [Export]
-    protected float speed;
+    protected float Speed;
+
+    [Export]
+    private float _rotationSpeed = 5;
+
     [Export(hintString: "Lifespan in seconds")]
     private float _lifeSpan = 10;
     [Export]
@@ -25,7 +29,7 @@ public abstract partial class BaseProjectile : Area2D
     [Export]
     private Color _friendlyColor = Colors.Blue;
 
-    protected Vector2 velocity = Vector2.Zero;
+    protected Vector2 Velocity = Vector2.Zero;
 
     private Timer _lifespanTimer = new();
 
@@ -43,7 +47,7 @@ public abstract partial class BaseProjectile : Area2D
     {
         Move(delta);
         EdgeCheck();
-        Rotation = float.Atan2(velocity.Y, velocity.X);
+        LookAtVelocity(delta);
     }
 
     private void _on_area_2d_area_entered(Area2D area)
@@ -57,9 +61,15 @@ public abstract partial class BaseProjectile : Area2D
         EmitSignal(nameof(OnCollision), area);
     }
 
-    private void OnBodyEntered(Node2D body)
+    protected void OnBodyEntered(Node2D body)
     {
-        if (body.IsInGroup("Player"))
+        OnCollisionWithBody(body);
+    }
+
+    protected virtual void OnCollisionWithBody(Node2D body)
+    {
+        var colliderIsPlayer = body.IsInGroup("Player");
+        if (colliderIsPlayer)
         {
             _type = ProjectileType.Allied;
             _sprite.Modulate = _friendlyColor;
@@ -69,9 +79,13 @@ public abstract partial class BaseProjectile : Area2D
 
         if (_type == ProjectileType.Allied && body is BaseEnemy enemy)
         {
-            GD.Print("Enemy got hit");
             enemy.TakeDamage(_damage);
             SetProcess(false);
+        }
+
+        if (!colliderIsPlayer)
+        {
+            QueueFree();
         }
     }
 
@@ -84,9 +98,15 @@ public abstract partial class BaseProjectile : Area2D
     public void Fire(Vector2 origin, Vector2 direction)
     {
         GlobalPosition = origin;
-        velocity = direction.Normalized() * speed;
+        Velocity = direction.Normalized() * Speed;
         _lifespanTimer.WaitTime = _lifeSpan;
         _lifespanTimer.Start();
+    }
+
+    protected void LookAtVelocity(double delta)
+    {
+        float targetAngle = float.Atan2(Velocity.Y, Velocity.X);
+        Rotation = float.Lerp(Rotation, targetAngle, (float)delta * _rotationSpeed);
     }
 
     private void EdgeCheck()
@@ -111,14 +131,14 @@ public abstract partial class BaseProjectile : Area2D
 
     protected void TruncateVelocity()
     {
-        float sqrMagnitude = velocity.X * velocity.X + velocity.Y * velocity.Y;
+        float sqrMagnitude = Velocity.X * Velocity.X + Velocity.Y * Velocity.Y;
 
-        if (sqrMagnitude <= speed * speed)
+        if (sqrMagnitude <= Speed * Speed)
         {
             return;
         }
 
-        velocity = velocity.Normalized();
-        velocity *= speed;
+        Velocity = Velocity.Normalized();
+        Velocity *= Speed;
     }
 }

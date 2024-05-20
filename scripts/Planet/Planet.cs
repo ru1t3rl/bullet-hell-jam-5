@@ -59,9 +59,14 @@ public partial class Planet : Node2D
 		}
 	}
 
-	private void EndGame()
+	  private void EndGame()
 	{
 		GD.Print("Game Over: Planet destroyed!");
-		// Add your game over logic here
+		CallDeferred(nameof(RestartGame));
+	}
+
+	private void RestartGame()
+	{
+		GetTree().ReloadCurrentScene();
 	}
 }

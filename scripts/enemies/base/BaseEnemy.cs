@@ -74,6 +74,7 @@ public abstract partial class BaseEnemy : CharacterBody2D
         State = EnemyState.Dead;
         ScoreAdjuster?.AdjustScore(Score);
         EmitSignal(nameof(OnDie), this);
+        QueueFree();
     }
 
     private ScoreAdjuster FindScoreAdjuster()

@@ -10,6 +10,8 @@ radius = 49.8197
 
 [node name="Basic Enemy" type="CharacterBody2D" node_paths=PackedStringArray("ScoreAdjuster")]
 scale = Vector2(0.5, 0.5)
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_8pj8o")
 _projectile = ExtResource("2_ku4j6")
 _numberOfProjectiles = 5
@@ -17,7 +19,7 @@ _timeBetweenShots = 400
 _maxDestinationRange = 250.0
 _rotationSpeed = 5.0
 ScoreAdjuster = NodePath("Score Adjuster")
-_health = 3.0
+_health = 1.0
 _score = 15
 _speed = 50.0
 _powerupDropchange = 0.1

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ctdvwxqug8cgw"]
 
 [ext_resource type="PackedScene" uid="uid://w2ybjhoi8rl5" path="res://scenes/enemies/basic_enemy.tscn" id="1_yocpo"]
-[ext_resource type="PackedScene" uid="uid://c5ifrx6w37aj" path="res://scenes/Player/player.tscn" id="2_assjj"]
+[ext_resource type="PackedScene" uid="uid://c5ifrx6w37aj" path="res://scenes/player/player.tscn" id="2_assjj"]
 
 [node name="Test-level" type="Node2D"]
 
@@ -9,4 +9,4 @@
 position = Vector2(639, 196)
 
 [node name="Player" parent="." instance=ExtResource("2_assjj")]
-position = Vector2(650, 400)
+position = Vector2(641, 447)

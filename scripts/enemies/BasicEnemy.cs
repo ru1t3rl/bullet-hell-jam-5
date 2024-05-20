@@ -152,10 +152,4 @@ public partial class BasicEnemy : BaseEnemy
         _cooldown = false;
         State = EnemyState.Idle;
     }
-
-    protected override void Dispose(bool disposing)
-    {
-        _cooldownTimer.Timeout -= FinishCooldown;
-        base.Dispose(disposing);
-    }
 }
