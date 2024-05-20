@@ -22,8 +22,12 @@ public partial class BaseResourceZone : Area2D
 
 	private int _currentNumberOfResources;
 
+	private Polygon2D _polygon;
+
 	public override void _Ready()
 	{
+		_polygon = GetNode<Polygon2D>("Polygon2D");
+
 		if (_currency is null)
 		{
 			GD.Print("Linked supply resources isn't a valid supply");
@@ -118,4 +122,17 @@ public partial class BaseResourceZone : Area2D
 		_currentNumberOfResources += _numberOfResourcesPerGeneration;
 		EmitSignal(nameof(OnResourcesGenerated));
 	}
+
+		private void UpdateColor()
+		{
+			// Calculate the new color based on the health
+			float healthPercentage = _health / (float)_startHealth;
+			Color newColor = new Color(1.0f, healthPercentage, healthPercentage); // Red when health is low, green when health is full
+
+			if (_polygon != null)
+			{
+				_polygon.Color = newColor;
+			}
+		}
+
 }
