@@ -1,65 +1,76 @@
-[gd_scene load_steps=7 format=3 uid="uid://bg2c3gg2ufk5g"]
+[gd_scene load_steps=11 format=3 uid="uid://bg2c3gg2ufk5g"]
 
+[ext_resource type="PackedScene" uid="uid://ci87r8juvqhii" path="res://scenes/player/player.tscn" id="1_w5d1s"]
+[ext_resource type="PackedScene" uid="uid://ci87r8juvqhii" path="res://scenes/player/player_updated.tscn" id="1_w5d1s"]
+[ext_resource type="Texture2D" uid="uid://bncf58acanmtr" path="res://assets/sprites/Backgrounds/blue.png" id="1_xy3o8"]
+[ext_resource type="PackedScene" uid="uid://dkvn8vv3l6hmh" path="res://scenes/waves/wave-manager.tscn" id="2_7waki"]
+[ext_resource type="PackedScene" uid="uid://bp1avupskson1" path="res://scenes/planet/planet.tscn" id="3_4to7n"]
 [ext_resource type="Script" path="res://scripts/player/Player.gd" id="1_tncdf"]
 [ext_resource type="Texture2D" uid="uid://bk4p8dkkaccs2" path="res://icon.svg" id="2_ppjyl"]
-[ext_resource type="Theme" uid="uid://sojho4d38v24" path="res://assets/MainTheme.tres" id="4_7bvpo"]
+[ext_resource type="Theme" path="res://assets/MainTheme.tres" id="4_7bvpo"]
 [ext_resource type="Texture2D" uid="uid://bdr08bcfv4xoj" path="res://assets/sprites/icons/ic-plannet-health.png" id="4_jipog"]
+[ext_resource type="Script" path="res://scripts/GameManager.cs" id="5_0i4hx"]
 [ext_resource type="Texture2D" uid="uid://d0xbwfkxehqfs" path="res://assets/sprites/icons/ic-score.png" id="5_3scjt"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_j0n7d"]
-size = Vector2(310, 20)
+[ext_resource type="Script" path="res://scripts/ScoreGUI.cs" id="8_fpkyf"]
+[ext_resource type="Script" path="res://scripts/waves/WaveGUI.cs" id="9_5qqv6"]
 
 [node name="Node2D" type="Node2D"]
 
-[node name="TileMap" type="TileMap" parent="."]
-format = 2
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+follow_viewport_enabled = true
 
-[node name="Player" type="CharacterBody2D" parent="TileMap"]
-position = Vector2(524, 125)
-motion_mode = 1
-script = ExtResource("1_tncdf")
+[node name="TextureRect" type="TextureRect" parent="Background"]
+z_index = -5
+offset_right = 1280.0
+offset_bottom = 720.0
+texture = ExtResource("1_xy3o8")
+stretch_mode = 1
 
-[node name="Sprite" type="Sprite2D" parent="TileMap/Player"]
-scale = Vector2(2.42969, 0.164063)
-texture = ExtResource("2_ppjyl")
-metadata/_edit_lock_ = true
+[node name="Wave Manager" parent="." instance=ExtResource("2_7waki")]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TileMap/Player"]
-shape = SubResource("RectangleShape2D_j0n7d")
-metadata/_edit_lock_ = true
+[node name="Planet" parent="." instance=ExtResource("3_4to7n")]
+position = Vector2(663, 328)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Player" parent="." instance=ExtResource("1_w5d1s")]
+position = Vector2(665, 149)
+rotation = -1.57079
 
-[node name="Top Left Container" type="GridContainer" parent="CanvasLayer"]
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="Top Left Container" type="GridContainer" parent="GUI"]
 offset_left = 20.0
 offset_top = 15.0
 offset_right = 89.0
 offset_bottom = 65.0
 columns = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Top Left Container"]
+[node name="TextureRect" type="TextureRect" parent="GUI/Top Left Container"]
+visible = false
 layout_mode = 2
 texture = ExtResource("4_jipog")
 expand_mode = 5
 
-[node name="Health Label" type="Label" parent="CanvasLayer/Top Left Container"]
+[node name="Health Label" type="Label" parent="GUI/Top Left Container"]
+visible = false
 layout_mode = 2
 theme = ExtResource("4_7bvpo")
 text = "100%"
 vertical_alignment = 1
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Top Left Container"]
+[node name="TextureRect2" type="TextureRect" parent="GUI/Top Left Container"]
 layout_mode = 2
 texture = ExtResource("5_3scjt")
 expand_mode = 3
 
-[node name="Score Text" type="Label" parent="CanvasLayer/Top Left Container"]
+[node name="Score Text" type="Label" parent="GUI/Top Left Container"]
 layout_mode = 2
 theme = ExtResource("4_7bvpo")
 text = "0000"
 vertical_alignment = 1
+script = ExtResource("8_fpkyf")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI"]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -69,7 +80,14 @@ offset_right = -20.0
 offset_bottom = 55.0
 grow_horizontal = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer"]
+[node name="Wave Text" type="Label" parent="GUI/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("4_7bvpo")
 text = "Wave 0"
+script = ExtResource("9_5qqv6")
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("5_0i4hx")
+
+[connection signal="OnWaveStart" from="Wave Manager" to="GUI/VBoxContainer/Wave Text" method="OnWaveChanged"]
+[connection signal="OnAdjustScore" from="GameManager" to="GUI/Top Left Container/Score Text" method="OnScoreChanged"]
