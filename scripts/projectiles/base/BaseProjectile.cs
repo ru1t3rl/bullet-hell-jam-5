@@ -1,6 +1,7 @@
+using BulletHellJam5.Enemies;
 using Godot;
 
-namespace BulletHellJam5.projectiles;
+namespace BulletHellJam5.Projectiles;
 
 public abstract partial class BaseProjectile : Area2D
 {
@@ -16,7 +17,11 @@ public abstract partial class BaseProjectile : Area2D
     private int _damage = 1;
     public int Damage => _damage;
 
-    [ExportGroup("Enemy Visual")]
+    [Export]
+    protected ProjectileType _type = ProjectileType.Hostile;
+    public ProjectileType Type => _type;
+
+    [ExportGroup("Visual")]
     [Export]
     private Sprite2D _sprite;
     [Export]
@@ -45,11 +50,43 @@ public abstract partial class BaseProjectile : Area2D
         LookAtVelocity(delta);
     }
 
-    private void OnBodyEntered(Node2D body)
+    private void _on_area_2d_area_entered(Area2D area)
     {
+        if (area.IsInGroup("Player"))
+        {
+            _type = ProjectileType.Allied;
+            _sprite.Modulate = _friendlyColor;
+        }
+
+        EmitSignal(nameof(OnCollision), area);
+    }
+
+    protected void OnBodyEntered(Node2D body)
+    {
+        OnCollisionWithBody(body);
+    }
+
+    protected virtual void OnCollisionWithBody(Node2D body)
+    {
+        var colliderIsPlayer = body.IsInGroup("Player");
+        if (colliderIsPlayer)
+        {
+            _type = ProjectileType.Allied;
+            _sprite.Modulate = _friendlyColor;
+        }
+
         EmitSignal(nameof(OnCollision), body);
 
-        // TODO [LR]: When player is in game implement collision check to change color
+        if (_type == ProjectileType.Allied && body is BaseEnemy enemy)
+        {
+            enemy.TakeDamage(_damage);
+            SetProcess(false);
+        }
+
+        if (!colliderIsPlayer)
+        {
+            QueueFree();
+        }
     }
 
     private void LifespanTimerOnTimeout()

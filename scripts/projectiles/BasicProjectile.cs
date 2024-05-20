@@ -1,26 +1,19 @@
+using BulletHellJam5.Projectiles;
 using Godot;
 
 namespace BulletHellJam5.projectiles;
 
 public partial class BasicProjectile : BaseProjectile
 {
-    private Sprite2D sprite;
-    private CollisionShape2D CollisionShape;
-
-    public override void _Ready()
-    {
-        Connect("body_entered", new Callable(this, nameof(OnBodyEntered)));
-        sprite = GetNode<Sprite2D>("ProjectileSprite");
-        CollisionShape = GetNode<CollisionShape2D>("ProjectileCollisionShape");
-    }
-
     protected override void Move(double delta)
     {
         GlobalPosition += Velocity * (float)delta;
     }
 
-    private void OnBodyEntered(Node body)
+    protected override void OnCollisionWithBody(Node2D body)
     {
+        base.OnCollisionWithBody(body);
+
         if (body.IsInGroup("Player"))
         {
             this.SetCollisionLayerValue(1, false);

@@ -1,9 +1,9 @@
-﻿namespace BulletHellJam5.Enemies.Enums;
+namespace BulletHellJam5.Enemies.Enums;
 
 public enum EnemyState
 {
-    Idle,
-    Moving,
-    Shooting,
-    Dead
+	Idle,
+	Moving,
+	Shooting,
+	Dead
 }

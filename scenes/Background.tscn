@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddexp7oirlvkr"]
+
+[ext_resource type="Texture2D" uid="uid://bncf58acanmtr" path="res://assets/sprites/Backgrounds/blue.png" id="1_3fvdw"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Blue" type="Sprite2D" parent="."]
+texture_repeat = 2
+scale = Vector2(5.00781, 2.81641)
+texture = ExtResource("1_3fvdw")

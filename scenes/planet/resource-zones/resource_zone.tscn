@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://wycxpj88g1j3"]
+
+[ext_resource type="Script" path="res://scripts/resource-zones/BaseResourceZone.cs" id="1_r6i8m"]
+[ext_resource type="Resource" uid="uid://bajtwvjdgiky" path="res://resources/example_resource.tres" id="2_8uc03"]
+[ext_resource type="Theme" uid="uid://sojho4d38v24" path="res://assets/MainTheme.tres" id="3_vptmy"]
+
+[node name="Resource Zone" type="Area2D"]
+script = ExtResource("1_r6i8m")
+_currency = ExtResource("2_8uc03")
+_health = 3
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(3, -3, 115, 95, 138, 60, 149, 0, 137, -39, 122, -87)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0, 0.760784, 0, 0.372549)
+polygon = PackedVector2Array(-2, -1, 115, 94, 140, 48, 147, 0, 135, -55, 124, -94)
+
+[node name="HealthText" type="TextEdit" parent="."]
+offset_left = 62.0
+offset_top = -16.0
+offset_right = 98.0
+offset_bottom = 12.0
+theme = ExtResource("3_vptmy")
+text = "5/5"
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]

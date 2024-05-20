@@ -5,9 +5,26 @@ namespace BulletHellJam5.Enemies;
 
 public abstract partial class BaseEnemy : CharacterBody2D
 {
+    protected ScoreAdjuster _scoreAdjuster;
+
+    [Export]
+    public ScoreAdjuster ScoreAdjuster
+    {
+        get => _scoreAdjuster ??= FindScoreAdjuster();
+        set
+        {
+            _scoreAdjuster = value;
+            UpdateConfigurationWarnings();
+        }
+    }
+
     [Export]
     protected float _health;
     public float Health => _health;
+
+    [Export]
+    protected int _score;
+    public int Score => _score;
 
     [Export]
     protected float _speed;
@@ -46,7 +63,7 @@ public abstract partial class BaseEnemy : CharacterBody2D
         _health -= damage;
         EmitSignal(nameof(OnTakeDamage), Health);
 
-        if (_health <= 0)
+        if (Health <= 0)
         {
             Die();
         }
@@ -55,6 +72,33 @@ public abstract partial class BaseEnemy : CharacterBody2D
     protected virtual void Die()
     {
         State = EnemyState.Dead;
+        ScoreAdjuster?.AdjustScore(Score);
         EmitSignal(nameof(OnDie), this);
+        QueueFree();
+    }
+
+    private ScoreAdjuster FindScoreAdjuster()
+    {
+        var children = GetChildren();
+        foreach (var child in children)
+        {
+            if (child is ScoreAdjuster score)
+            {
+                return score;
+            }
+        }
+
+        return null;
+    }
+
+    public override string[] _GetConfigurationWarnings()
+    {
+        var scoreAdjuster = FindScoreAdjuster();
+        if (scoreAdjuster is null)
+        {
+            return ["This node must have a ScoreAdjuster child"];
+        }
+
+        return [];
     }
 }
