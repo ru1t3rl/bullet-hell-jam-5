@@ -11,7 +11,7 @@ height = 122.0
 position = Vector2(500, 500)
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_myi44")
-Speed = 50.0
+Speed = 150.0
 _sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
