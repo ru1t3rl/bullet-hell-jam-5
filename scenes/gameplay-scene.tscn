@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://bg2c3gg2ufk5g"]
 
 [ext_resource type="Script" path="res://scripts/utils/ScreenShake.cs" id="1_r1hjh"]
-[ext_resource type="PackedScene" uid="uid://b1cf0ovvwuhu" path="res://scenes/player/player_updated.tscn" id="1_w5d1s"]
+[ext_resource type="PackedScene" uid="uid://baeiex0isaiwf" path="res://scenes/player/player_updated.tscn" id="1_w5d1s"]
 [ext_resource type="Texture2D" uid="uid://bncf58acanmtr" path="res://assets/sprites/Backgrounds/blue.png" id="1_xy3o8"]
 [ext_resource type="PackedScene" uid="uid://dkvn8vv3l6hmh" path="res://scenes/waves/wave-manager.tscn" id="2_7waki"]
 [ext_resource type="PackedScene" uid="uid://bp1avupskson1" path="res://scenes/planet/planet.tscn" id="3_4to7n"]
@@ -19,7 +19,7 @@ offset = Vector2(640, 360)
 
 [node name="ScreenShake" type="Node" parent="Camera2D" node_paths=PackedStringArray("_objectToShake")]
 script = ExtResource("1_r1hjh")
-_maxIntensity = 0.1
+_maxIntensity = 0.5
 _shakeDuration = 1.0
 _objectToShake = NodePath("..")
 
@@ -45,6 +45,8 @@ position = Vector2(663, 328)
 [node name="Player" parent="." instance=ExtResource("1_w5d1s")]
 position = Vector2(665, 149)
 rotation = -1.57079
+_distanceFromCenter = 175.0
+_speed = 5.0
 
 [node name="GUI" type="CanvasLayer" parent="."]
 
