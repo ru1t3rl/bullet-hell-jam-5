@@ -6,133 +6,126 @@ namespace BulletHellJam5.ResourceZones;
 
 public partial class BaseResourceZone : Area2D
 {
-	[Export]
-	private Currency _currency;
+    [Export] private Currency _currency;
 
-	[Export]
-	private int _health = 50;
-	private int _startHealth;
+    [Export] private int _health = 50;
+    private int _startHealth;
 
-	[ExportGroup("Resource Generation")]
-	[Export]
-	private int _numberOfResourcesPerGeneration = 10;
-	[Export]
-	private float _resourceGenerationInterval = 5f;
-	private Timer _resourceGenerationTimer = new();
+    [ExportGroup("Resource Generation")] [Export]
+    private int _numberOfResourcesPerGeneration = 10;
 
-	private int _currentNumberOfResources;
+    [Export] private float _resourceGenerationInterval = 5f;
+    private Timer _resourceGenerationTimer = new();
 
-	private Polygon2D _polygon;
+    private int _currentNumberOfResources;
 
-	public override void _Ready()
-	{
-		_polygon = GetNode<Polygon2D>("Polygon2D");
+    private Polygon2D _polygon;
 
-		if (_currency is null)
-		{
-			GD.Print("Linked supply resources isn't a valid supply");
-			return;
-		}
+    public override void _Ready()
+    {
+        _polygon = GetNode<Polygon2D>("Polygon2D");
 
-		SetupTimer();
+        if (_currency is null)
+        {
+            GD.Print("Linked supply resources isn't a valid supply");
+            return;
+        }
 
-		_startHealth = _health;
-	}
+        SetupTimer();
+
+        _startHealth = _health;
+    }
 
 
+    private void _on_area_entered(Area2D area)
+    {
+        EmitSignal(nameof(OnCollision), area);
+        if (area is not BaseProjectile projectile)
+            //GD.Print("Colliding with anything thats not a bullet");
+            return;
 
-	private void _on_area_entered(Area2D area)
-	{
-		EmitSignal(nameof(OnCollision), area);
-		if (area is not BaseProjectile projectile)
-		{
-			//GD.Print("Colliding with anything thats not a bullet");
-			return;
-		}
+        TakeDamage(projectile.Damage);
+    }
 
-		TakeDamage(projectile.Damage);
-	}
+    private void OnBodyEntered(Node2D body)
+    {
+        EmitSignal(nameof(OnCollision), body);
+        if (body is not BaseProjectile projectile)
+            //GD.Print("Colliding with anything thats not a bullet");
+            return;
 
-	private void OnBodyEntered(Node2D body)
-	{
-		EmitSignal(nameof(OnCollision), body);
-		if (body is not BaseProjectile projectile)
-		{
-			//GD.Print("Colliding with anything thats not a bullet");
-			return;
-		}
+        TakeDamage(projectile.Damage);
+    }
 
-		TakeDamage(projectile.Damage);
-	}
+    public void TakeDamage(int amount)
+    {
+        //GD.Print("is this working?");
+        _health -= amount;
+        EmitSignal(nameof(OnTakeDamage), amount);
+        UpdateColor();
+        if (_health <= 0) Die();
+    }
 
-	public void TakeDamage(int amount)
-	{
-		//GD.Print("is this working?");
-		_health -= amount;
-		EmitSignal(nameof(OnTakeDamage), amount);
-		
-		if (_health <= 0)
-		{
-			Die();
-		}
-	}
-	
-	protected virtual void Die()
-	{
-		var onZoneDestroyed = nameof(OnZoneDestroyed);
-		EmitSignal(onZoneDestroyed);
-		//QueueFree();
-		
-	}
+    protected virtual void Die()
+    {
+        var onZoneDestroyed = nameof(OnZoneDestroyed);
+        EmitSignal(onZoneDestroyed);
+        //QueueFree();
+    }
 
-	public void TakeResources(int amount)
-	{
-		_currentNumberOfResources -= amount;
-		EmitSignal(nameof(OnTakeResources), amount);
-	}
+    public void TakeResources(int amount)
+    {
+        _currentNumberOfResources -= amount;
+        EmitSignal(nameof(OnTakeResources), amount);
+    }
 
-	public int TakeResourcesHealthBased()
-	{
-		int resourcesToTake = Mathf.RoundToInt(_currentNumberOfResources * (_health / (float)_startHealth));
-		_currentNumberOfResources -= resourcesToTake;
+    public int TakeResourcesHealthBased()
+    {
+        int resourcesToTake = Mathf.RoundToInt(_currentNumberOfResources * (_health / (float)_startHealth));
+        _currentNumberOfResources -= resourcesToTake;
 
-		EmitSignal(nameof(OnTakeResources), 1);
-		return resourcesToTake;
-	}
+        EmitSignal(nameof(OnTakeResources), 1);
+        return resourcesToTake;
+    }
 
-	public int TakeAllResources()
-	{
-		var nResources = _currentNumberOfResources;
-		_currentNumberOfResources = 0;
+    public int TakeAllResources()
+    {
+        var nResources = _currentNumberOfResources;
+        _currentNumberOfResources = 0;
 
-		EmitSignal(nameof(OnTakeResources), nResources);
-		return nResources;
-	}
+        EmitSignal(nameof(OnTakeResources), nResources);
+        return nResources;
+    }
 
-	private void SetupTimer()
-	{
-		AddChild(_resourceGenerationTimer);
-		_resourceGenerationTimer.WaitTime = _resourceGenerationInterval;
-		_resourceGenerationTimer.Timeout += OnResourceTimerTick;
-		_resourceGenerationTimer.Start();
-	}
+    private void SetupTimer()
+    {
+        AddChild(_resourceGenerationTimer);
+        _resourceGenerationTimer.WaitTime = _resourceGenerationInterval;
+        _resourceGenerationTimer.Timeout += OnResourceTimerTick;
+        _resourceGenerationTimer.Start();
+    }
 
-	private void OnResourceTimerTick()
-	{
-		_currentNumberOfResources += _numberOfResourcesPerGeneration;
-		EmitSignal(nameof(OnResourcesGenerated));
-	}
+    private void OnResourceTimerTick()
+    {
+        _currentNumberOfResources += _numberOfResourcesPerGeneration;
+        EmitSignal(nameof(OnResourcesGenerated));
+    }
 
-		private void UpdateColor()
-		{
-			// Calculate the new color based on the health
-			float healthPercentage = _health / (float)_startHealth;
-			Color newColor = new Color(1.0f, healthPercentage, healthPercentage); // Red when health is low, green when health is full
+    private void UpdateColor()
+    {
+        if (_polygon == null)
+            return;
 
-			if (_polygon != null)
-			{
-				_polygon.Color = newColor;
-			}
-		}
+        // Calculate the new color based on the health
+        float healthPercentage = _health / (float)_startHealth;
+        Color currentColor = _polygon.Color;
 
+        // Set alpha to 0 if health is less than or equal to 0
+        float newAlpha = _health <= 0 ? 0 : currentColor.A;
+
+        Color newColor =
+            new Color(1.0f, healthPercentage, healthPercentage, newAlpha); // Preserve or update alpha value
+
+        _polygon.Color = newColor;
+    }
 }
