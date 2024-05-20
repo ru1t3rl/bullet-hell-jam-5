@@ -43,11 +43,13 @@ offset_bottom = 65.0
 columns = 2
 
 [node name="TextureRect" type="TextureRect" parent="GUI/Top Left Container"]
+visible = false
 layout_mode = 2
 texture = ExtResource("4_jipog")
 expand_mode = 5
 
 [node name="Health Label" type="Label" parent="GUI/Top Left Container"]
+visible = false
 layout_mode = 2
 theme = ExtResource("4_7bvpo")
 text = "100%"
