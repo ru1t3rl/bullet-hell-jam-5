@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace BulletHellJam5.projectiles;
+namespace BulletHellJam5.Projectiles;
 
 public partial class BaseProjectile
 {

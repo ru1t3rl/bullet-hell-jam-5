@@ -1,4 +1,4 @@
-using BulletHellJam5.projectiles;
+using BulletHellJam5.Projectiles;
 using BulletHellJam5.ResourceZones.Resources;
 using Godot;
 
@@ -6,15 +6,18 @@ namespace BulletHellJam5.ResourceZones;
 
 public partial class BaseResourceZone : Area2D
 {
-    [Export] private Currency _currency;
+    [Export]
+    private Currency _currency;
 
-    [Export] private int _health = 50;
+    [Export]
+    private int _health = 50;
     private int _startHealth;
 
-    [ExportGroup("Resource Generation")] [Export]
+    [ExportGroup("Resource Generation")]
+    [Export]
     private int _numberOfResourcesPerGeneration = 10;
-
-    [Export] private float _resourceGenerationInterval = 5f;
+    [Export]
+    private float _resourceGenerationInterval = 5f;
     private Timer _resourceGenerationTimer = new();
 
     private int _currentNumberOfResources;
@@ -42,8 +45,9 @@ public partial class BaseResourceZone : Area2D
     {
         EmitSignal(nameof(OnCollision), area);
         if (area is not BaseProjectile projectile)
-            //GD.Print("Colliding with anything thats not a bullet");
+        {
             return;
+        }
 
         TakeDamage(projectile.Damage);
     }
@@ -52,15 +56,15 @@ public partial class BaseResourceZone : Area2D
     {
         EmitSignal(nameof(OnCollision), body);
         if (body is not BaseProjectile projectile)
-            //GD.Print("Colliding with anything thats not a bullet");
+        {
             return;
+        }
 
         TakeDamage(projectile.Damage);
     }
 
     public void TakeDamage(int amount)
     {
-        //GD.Print("is this working?");
         _health -= amount;
         EmitSignal(nameof(OnTakeDamage), amount);
         UpdateColor();
@@ -80,9 +84,8 @@ public partial class BaseResourceZone : Area2D
 
     protected virtual void Die()
     {
-        var onZoneDestroyed = nameof(OnZoneDestroyed);
-        EmitSignal(onZoneDestroyed);
-        //QueueFree();
+        EmitSignal(nameof(OnZoneDestroyed), 1);
+        QueueFree();
     }
 
     public void TakeResources(int amount)
