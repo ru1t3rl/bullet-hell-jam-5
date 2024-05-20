@@ -56,6 +56,7 @@ public abstract partial class BaseEnemy : CharacterBody2D
 	{
 		State = EnemyState.Shooting;
 		EmitSignal(nameof(OnShoot));
+		AudioManager.Instance.PlaySfx(AudioManager.Instance.laserSfx);
 	}
 
 	public virtual void TakeDamage(float damage)

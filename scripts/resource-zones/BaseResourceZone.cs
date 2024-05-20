@@ -85,6 +85,7 @@ public partial class BaseResourceZone : Area2D
 	protected virtual void Die()
 	{
 		EmitSignal(nameof(OnZoneDestroyed), 1);
+		AudioManager.Instance.PlaySfx(AudioManager.Instance.zoneSfx);
 		QueueFree();
 	}
 

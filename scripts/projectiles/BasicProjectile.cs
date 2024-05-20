@@ -26,6 +26,7 @@ public partial class BasicProjectile : BaseProjectile
 			Vector2 incident = Velocity.Normalized();
 			Vector2 reflected = incident - 2 * (incident.Dot(player.Normal)) * player.Normal;
 			Velocity = reflected * Velocity.Length(); // Calculate reflected velocity once
+			AudioManager.Instance.PlaySfx(AudioManager.Instance.bounce);
 		}
 	}
 }

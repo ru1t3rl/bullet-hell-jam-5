@@ -1,7 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://bg2c3gg2ufk5g"]
+[gd_scene load_steps=13 format=3 uid="uid://bg2c3gg2ufk5g"]
 
 [ext_resource type="Script" path="res://scripts/utils/ScreenShake.cs" id="1_r1hjh"]
-[ext_resource type="PackedScene" uid="uid://baeiex0isaiwf" path="res://scenes/player/player_updated.tscn" id="1_w5d1s"]
+[ext_resource type="PackedScene" uid="uid://jvafk54xo7ji" path="res://scenes/player/player_updated.tscn" id="1_w5d1s"]
 [ext_resource type="Texture2D" uid="uid://bncf58acanmtr" path="res://assets/sprites/Backgrounds/blue.png" id="1_xy3o8"]
 [ext_resource type="PackedScene" uid="uid://dkvn8vv3l6hmh" path="res://scenes/waves/wave-manager.tscn" id="2_7waki"]
 [ext_resource type="PackedScene" uid="uid://bp1avupskson1" path="res://scenes/planet/planet.tscn" id="3_4to7n"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://d0xbwfkxehqfs" path="res://assets/sprites/icons/ic-score.png" id="5_3scjt"]
 [ext_resource type="Script" path="res://scripts/ScoreGUI.cs" id="8_fpkyf"]
 [ext_resource type="Script" path="res://scripts/waves/WaveGUI.cs" id="9_5qqv6"]
+[ext_resource type="PackedScene" path="res://scenes/audio_manager.tscn" id="12_apesn"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -100,6 +101,8 @@ script = ExtResource("9_5qqv6")
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("5_0i4hx")
+
+[node name="AudioManager" parent="." instance=ExtResource("12_apesn")]
 
 [connection signal="OnWaveStart" from="Wave Manager" to="GUI/VBoxContainer/Wave Text" method="OnWaveChanged"]
 [connection signal="OnAdjustScore" from="GameManager" to="GUI/Top Left Container/Score Text" method="OnScoreChanged"]

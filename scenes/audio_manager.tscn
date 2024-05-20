@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://ddakl5xaeig3q"]
+
+[ext_resource type="Script" path="res://scenes/AudioManager.cs" id="1_w3mu1"]
+[ext_resource type="AudioStream" uid="uid://cmas2j71i44s2" path="res://assets/audio/ExplorationTheme.wav" id="1_ym32n"]
+[ext_resource type="AudioStream" uid="uid://1x05h8aaqniy" path="res://assets/audio/laserRetro_000.ogg" id="2_s8a2h"]
+[ext_resource type="AudioStream" uid="uid://cewpicn4h2716" path="res://assets/audio/explosionCrunch_001.ogg" id="3_m2byp"]
+[ext_resource type="AudioStream" uid="uid://ji3fgmavbr56" path="res://assets/audio/impactPlate_heavy_000.ogg" id="4_1tktv"]
+
+[node name="AudioManager" type="Node2D"]
+script = ExtResource("1_w3mu1")
+
+[node name="MainTheme" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("1_ym32n")
+
+[node name="PlanetDestroyed" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_m2byp")
+
+[node name="EnemyDeath" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_m2byp")
+
+[node name="ZoneDestroyed" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_m2byp")
+
+[node name="Bounce" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_1tktv")
+
+[node name="EnemyLaser" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_s8a2h")
