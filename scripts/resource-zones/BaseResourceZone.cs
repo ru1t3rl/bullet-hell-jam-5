@@ -20,11 +20,12 @@ public partial class BaseResourceZone : Area2D
     private int _currentNumberOfResources;
 
     private Polygon2D _polygon;
+    private TextEdit _healthText;
 
     public override void _Ready()
     {
         _polygon = GetNode<Polygon2D>("Polygon2D");
-
+        _healthText = GetNode<TextEdit>("HealthText");
         if (_currency is null)
         {
             GD.Print("Linked supply resources isn't a valid supply");
@@ -63,7 +64,18 @@ public partial class BaseResourceZone : Area2D
         _health -= amount;
         EmitSignal(nameof(OnTakeDamage), amount);
         UpdateColor();
-        if (_health <= 0) Die();
+        UpdateText();
+        HealthCheck();
+    }
+
+    //TODO for some reason health is still going below 0
+    private void HealthCheck()
+    {
+        if (_health <= 0)
+        {
+            _health = 0;
+            Die();
+        }
     }
 
     protected virtual void Die()
@@ -103,6 +115,11 @@ public partial class BaseResourceZone : Area2D
         _resourceGenerationTimer.WaitTime = _resourceGenerationInterval;
         _resourceGenerationTimer.Timeout += OnResourceTimerTick;
         _resourceGenerationTimer.Start();
+    }
+
+    private void UpdateText()
+    {
+        _healthText.Text = _health.ToString();
     }
 
     private void OnResourceTimerTick()
