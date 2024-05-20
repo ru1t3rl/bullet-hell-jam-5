@@ -22,6 +22,12 @@ public partial class WaveManager : Node2D
     private int _seed; // seed for random number Gen
     private Random random;
 
+    [Export]
+    private int _minDistanceOutsideViewport = 50;
+    [Export]
+    private int _maxDistanceOutsideViewport = 100;
+
+
     [Signal]
     public delegate void OnWaveStartEventHandler(int wave, int nWaves);
 
@@ -71,22 +77,27 @@ public partial class WaveManager : Node2D
     }
 
 
-    // Generate a random spawnPosition around the edge of the camera view
-    private Vector2 GetRandomSpawnPositionOutsideCameraView()
+    private Vector2 GetRandomPositionOutsideViewport()
     {
-        // Get the size of the viewport
         Vector2 viewportSize = GetViewportRect().Size;
-
-        // Define the spawn boundaries outside of the viewport
-        float minX = -viewportSize.X / 2, maxX = viewportSize.X / 2;
-        float minY = -viewportSize.Y / 2, maxY = viewportSize.Y / 2;
-
-        // Generate random coordinates within the boundaries
-        float randomX = (float)GD.RandRange(minX, maxX);
-        float randomY = (float)GD.RandRange(minY, maxY);
-
-        // Return the random position
-        return new Vector2(randomX, randomY);
+        // 0: left, 1: top, 2: right, 3: bottom
+        int side = random.Next(4);
+        return side switch
+        {
+            0 => new Vector2(
+                -random.Next(_minDistanceOutsideViewport, _maxDistanceOutsideViewport),
+                random.NextSingle() * viewportSize.Y),
+            1 => new Vector2(
+                random.NextSingle() * viewportSize.X,
+                -random.Next(_minDistanceOutsideViewport, _maxDistanceOutsideViewport)),
+            2 => new Vector2(
+                random.Next(_minDistanceOutsideViewport, _maxDistanceOutsideViewport),
+                random.NextSingle() * viewportSize.Y),
+            3 => new Vector2(
+                random.NextSingle() * viewportSize.X,
+                random.Next(_minDistanceOutsideViewport, _maxDistanceOutsideViewport)),
+            _ => throw new ArgumentException()
+        };
     }
 
     //Handle Timer timeout event which spawns enemies
@@ -115,7 +126,7 @@ public partial class WaveManager : Node2D
                 {
                     // Add enemy to the scene and set its position and deduct from score value
                     AddChild(instance);
-                    spawnedEnemy.Position = GetRandomSpawnPositionOutsideCameraView();
+                    spawnedEnemy.Position = GetRandomPositionOutsideViewport();
                     spawnScore -= spawnedEnemy.Score;
                 }
 
