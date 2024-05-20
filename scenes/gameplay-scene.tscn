@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://bg2c3gg2ufk5g"]
 
-[ext_resource type="PackedScene" uid="uid://ci87r8juvqhii" path="res://scenes/player/player.tscn" id="1_w5d1s"]
+[ext_resource type="PackedScene" uid="uid://ci87r8juvqhii" path="res://scenes/player/player_updated.tscn" id="1_w5d1s"]
 [ext_resource type="Texture2D" uid="uid://bncf58acanmtr" path="res://assets/sprites/Backgrounds/blue.png" id="1_xy3o8"]
 [ext_resource type="PackedScene" uid="uid://dkvn8vv3l6hmh" path="res://scenes/waves/wave-manager.tscn" id="2_7waki"]
 [ext_resource type="PackedScene" uid="uid://bp1avupskson1" path="res://scenes/planet/planet.tscn" id="3_4to7n"]
