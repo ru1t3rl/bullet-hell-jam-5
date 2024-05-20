@@ -36,4 +36,10 @@ public partial class GameManager : Node
             Instance = this;
         }
     }
+
+    protected override void Dispose(bool disposing)
+    {
+        Instance = null;
+        base.Dispose(disposing);
+    }
 }

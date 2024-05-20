@@ -45,7 +45,6 @@ public partial class Planet : Node2D
 			resourceZone.GlobalPosition = new Vector2(x, y);
 			resourceZone.GlobalRotation = angle;
 			resourceZone.OnZoneDestroyed += OnZoneDestroyed;
-
 		}
 	}
 	private void OnZoneDestroyed(int amount)
